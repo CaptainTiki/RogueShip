@@ -18,11 +18,11 @@ var is_invulnerable: bool = false
 @onready var dodge_timer: Timer = Timer.new()
 @onready var invuln_timer: Timer = Timer.new()
 @onready var rotation_pivot: Node3D = $RotationPivot
-@onready var camera: Camera3D = get_viewport().get_camera_3d()  # Grab the active 3D camera
+@onready var bullet_spawn: Node3D = $RotationPivot/BulletSpawn
+@onready var camera: Camera3D = get_viewport().get_camera_3d()
+@onready var bullet_scene: PackedScene = preload("res://Projectiles/SimpleBullet.tscn")
 
 func _ready() -> void:
-	# Disable gravity for top-down
-	up_direction = Vector3.ZERO
 	
 	# Hook timers
 	add_child(shoot_timer)
@@ -48,21 +48,21 @@ func _physics_process(_delta: float) -> void:
 	# Movement: WASD or arrows, locked to X-Z plane
 	var move_input: Vector2 = Vector2(
 		Input.get_axis("move_left", "move_right"),
-		Input.get_axis("move_up", "move_down")  # Negate Z to make "up" move toward -Z
+		Input.get_axis("move_up", "move_down")
 	).normalized()
 	velocity = Vector3(move_input.x, 0, move_input.y) * speed
 	move_and_slide()
 	
-	# Aim: Raycast from camera through mouse to X-Z plane (y=0)
+	# Aim: Raycast from camera to X-Z plane (y=0)
 	if camera:
 		var mouse_pos: Vector2 = get_viewport().get_mouse_position()
 		var ray_origin: Vector3 = camera.project_ray_origin(mouse_pos)
 		var ray_dir: Vector3 = camera.project_ray_normal(mouse_pos)
-		var plane: Plane = Plane(Vector3(0, 1, 0), 0)  # Plane at y=0
+		var plane: Plane = Plane(Vector3(0, 1, 0), 0)
 		var aim_point: Variant = plane.intersects_ray(ray_origin, ray_dir)
 		if aim_point:
 			var look_dir: Vector3 = (aim_point - global_position).normalized()
-			rotation_pivot.rotation.y = atan2(look_dir.x, look_dir.z) - PI  # Negate to point at cursor
+			rotation_pivot.rotation.y = atan2(look_dir.x, look_dir.z) - PI
 	
 	# Shoot: Mouse click
 	if Input.is_action_pressed("fire_primary") and can_shoot:
@@ -73,17 +73,22 @@ func _physics_process(_delta: float) -> void:
 		dodge(move_input)
 
 func shoot() -> void:
-	# Placeholder: Later, spawn bullet with damage, pierce, bounce
+	var bullet = bullet_scene.instantiate() as Bullet
+	get_tree().root.add_child(bullet)
+	bullet.global_position = bullet_spawn.global_position
+	var angle = rotation_pivot.rotation.y - PI
+	var direction = Vector3(sin(angle), 0, cos(angle))
+	bullet.linear_velocity = direction * bullet.speed
+	bullet.damage = damage
 	can_shoot = false
 	shoot_timer.start(fire_rate)
 	
 func dodge(direction: Vector2) -> void:
 	if direction == Vector2.ZERO:
-		# Forward based on current Y rotation
 		var angle = rotation_pivot.rotation.y
-		direction = Vector2(-sin(angle), cos(angle))  # Flip sin for cursor-aligned forward
+		direction = Vector2(-sin(angle), cos(angle))
 	var dodge_vector: Vector3 = Vector3(direction.x, 0, direction.y).normalized() * dodge_distance
-	velocity += dodge_vector / dodge_cooldown  # Impulse add
+	velocity += dodge_vector / dodge_cooldown
 	is_invulnerable = true
 	can_dodge = false
 	invuln_timer.start(dodge_invuln_time)

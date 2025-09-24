@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://3fp1iq0534gf"]
+
+[ext_resource type="Script" uid="uid://cdmgdt5u5o36h" path="res://enemy_spawner.gd" id="1_ewhtn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ewhtn"]
+size = Vector3(5, 0.01, 5)
+
+[node name="EnemySpawner" type="Node3D"]
+script = ExtResource("1_ewhtn")
+
+[node name="SpawnArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SpawnArea"]
+shape = SubResource("BoxShape3D_ewhtn")

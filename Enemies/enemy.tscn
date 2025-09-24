@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://bg57py6i2fgvf"]
+
+[ext_resource type="Script" uid="uid://ckuxbgq0crtpo" path="res://Enemies/enemy.gd" id="1_3ih25"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_chnrf"]
+radius = 0.65
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3ih25"]
+radius = 0.75
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bxkaj"]
+radius = 0.55
+
+[node name="Enemy" type="CharacterBody3D" groups=["enemies"]]
+collision_layer = 256
+collision_mask = 16777473
+script = ExtResource("1_3ih25")
+
+[node name="HitBox" type="Area3D" parent="."]
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+shape = SubResource("SphereShape3D_chnrf")
+debug_color = Color(1, 0, 0, 0.69411767)
+
+[node name="HurtBox" type="Area3D" parent="."]
+collision_layer = 256
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+shape = SubResource("SphereShape3D_3ih25")
+debug_color = Color(1, 1, 0, 0.2901961)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_bxkaj")
+
+[node name="RotationPivot" type="Node3D" parent="."]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="RotationPivot"]
+
+[node name="Top" type="CSGBox3D" parent="RotationPivot/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5362071, 0)
+size = Vector3(0.2, 0.20527345, 0.2)
+
+[node name="Front" type="CSGBox3D" parent="RotationPivot/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.023935735, -0.7086835)
+size = Vector3(0.2, 0.2, 0.44676512)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="RotationPivot/CSGCombiner3D"]
+
+[node name="BulletSpawn" type="Marker3D" parent="RotationPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.1992855)

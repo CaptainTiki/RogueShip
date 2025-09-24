@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://cepnqohmffd6l"]
+[gd_scene load_steps=10 format=3 uid="uid://cepnqohmffd6l"]
 
 [ext_resource type="Script" uid="uid://b5emlgfef83qm" path="res://Rooms/room.gd" id="1_uprbt"]
 [ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://Rooms/ship_camera.gd" id="2_5ojky"]
+[ext_resource type="PackedScene" uid="uid://3fp1iq0534gf" path="res://enemy_spawner.tscn" id="3_05v1n"]
 
 [sub_resource type="Gradient" id="Gradient_uprbt"]
 offsets = PackedFloat32Array(0.037656903, 0.8995816, 0.94351465)
@@ -52,7 +53,7 @@ environment = SubResource("Environment_2je50")
 
 [node name="Camera3D" type="Camera3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 50, 0)
-fov = 18.0
+fov = 24.0
 script = ExtResource("2_5ojky")
 
 [node name="Objects" type="Node3D" parent="."]
@@ -60,20 +61,20 @@ script = ExtResource("2_5ojky")
 [node name="Walls" type="Node3D" parent="Objects"]
 
 [node name="LeftWall" type="CSGBox3D" parent="Objects/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0)
-size = Vector3(1, 1, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)
+size = Vector3(1, 1, 200)
 
 [node name="RightWall" type="CSGBox3D" parent="Objects/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 0)
-size = Vector3(1, 1, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 0)
+size = Vector3(1, 1, 200)
 
 [node name="BottomWall2" type="CSGBox3D" parent="Objects/Walls"]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.0927847e-06, 0, 25)
-size = Vector3(1, 1, 50)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 100)
+size = Vector3(1, 1, 200)
 
 [node name="TopWall2" type="CSGBox3D" parent="Objects/Walls"]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0927847e-06, 0, -25)
-size = Vector3(1, 1, 50)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -100)
+size = Vector3(1, 1, 200)
 
 [node name="Hazards" type="Node3D" parent="Objects"]
 
@@ -92,3 +93,76 @@ size = Vector3(1.1, 1.5, 1.2)
 [node name="Asteroid4" type="CSGBox3D" parent="Objects/Hazards"]
 transform = Transform3D(-0.09294403, -0.89607346, 0.43406674, 0.99025154, -0.12861724, -0.05347684, 0.10374763, 0.42486483, 0.89929223, -15.061714, 0, -17.931587)
 size = Vector3(1.1, 1.5, 1.2)
+
+[node name="Asteroid5" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.23225728, -0.875359, 0.42403245, -3.0184914e-08, 0.43595383, 0.89996916, -0.9726546, 0.20902437, -0.101253465, -54.101814, 0, 60.571472)
+size = Vector3(1.5, 4, 2)
+
+[node name="Asteroid6" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.42123842, 0.46528774, 0.7785025, -0.3553339, -0.8744191, 0.33034733, 0.8344438, -0.13747326, 0.53367126, -55.152725, 0, 31.838018)
+size = Vector3(2, 2, 1.2)
+
+[node name="Asteroid7" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.07080114, 0.8977107, -0.43485978, -3.018491e-08, 0.43595383, 0.89996916, 0.99749064, 0.063718826, -0.030866012, -29.310581, 0, 50.11163)
+size = Vector3(1.1, 1.5, 1.2)
+
+[node name="Asteroid8" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(0.05485695, 0.0072093904, 0.99846834, 0.9902515, -0.12861723, -0.053476837, 0.12803468, 0.9916682, -0.014194667, -71.691055, 0, 55.868362)
+size = Vector3(1.1, 1.5, 1.2)
+
+[node name="Asteroid9" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(0.7185999, -0.62586, 0.3031727, -2.2938073e-08, 0.43595383, 0.89996916, -0.69542384, -0.64671767, 0.31327635, -62.790394, 0, -49.759605)
+size = Vector3(1.5, 4, 2)
+
+[node name="Asteroid10" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.93263483, 0.35535848, -0.06255373, -0.3553339, -0.8744191, 0.33034733, 0.06269342, 0.3303209, 0.94178456, -38.60167, 0, -65.30377)
+size = Vector3(2, 2, 1.2)
+
+[node name="Asteroid11" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.8943809, 0.40256196, -0.1950049, -2.8326935e-08, 0.4359538, 0.8999691, 0.44730648, 0.80491513, -0.3899087, -41.158745, 0, -33.756943)
+size = Vector3(1.1, 1.5, 1.2)
+
+[node name="Asteroid12" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.08221954, -0.849624, 0.52094054, 0.9902514, -0.12861721, -0.053476833, 0.11243714, 0.5114653, 0.85191625, -67.70537, 0, -67.290825)
+size = Vector3(1.1, 1.5, 1.2)
+
+[node name="Asteroid13" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(0.74233854, 0.60300183, -0.2921, -4.4354024e-08, 0.43595392, 0.8999693, 0.6700251, -0.6680817, 0.32362536, 62.10608, 0, -63.94275)
+size = Vector3(1.5, 4, 2)
+
+[node name="Asteroid14" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.12549675, -0.30558354, -0.943859, -0.3553339, -0.8744191, 0.33034736, -0.92627686, 0.3768425, 0.0011527278, 79.24737, 0, -40.8583)
+size = Vector3(2, 2, 1.2)
+
+[node name="Asteroid15" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.506651, -0.7759097, 0.37585822, -2.8326939e-08, 0.43595386, 0.8999692, -0.8621515, 0.4559701, -0.22087632, 47.59989, 0, -41.280357)
+size = Vector3(1.1, 1.5, 1.2)
+
+[node name="Asteroid16" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.11772999, -0.5676427, -0.81481385, 0.99025136, -0.1286172, -0.053476825, -0.07444334, -0.8131663, 0.5772511, 79.265594, 0, -70.02975)
+size = Vector3(1.1, 1.5, 1.2)
+
+[node name="Asteroid17" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(0.74233854, 0.60300183, -0.2921, -4.4354024e-08, 0.43595392, 0.8999693, 0.6700251, -0.6680817, 0.32362536, 62.10608, 0, -26.844257)
+size = Vector3(1.5, 4, 2)
+
+[node name="Asteroid18" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.12549675, -0.30558354, -0.943859, -0.3553339, -0.8744191, 0.33034736, -0.92627686, 0.3768425, 0.0011527278, 79.24737, 0, -3.7598076)
+size = Vector3(2, 2, 1.2)
+
+[node name="Asteroid19" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.506651, -0.7759097, 0.37585822, -2.8326939e-08, 0.43595386, 0.8999692, -0.8621515, 0.4559701, -0.22087632, 47.59989, 0, -4.1818657)
+size = Vector3(1.1, 1.5, 1.2)
+
+[node name="Asteroid20" type="CSGBox3D" parent="Objects/Hazards"]
+transform = Transform3D(-0.11772999, -0.5676427, -0.81481385, 0.99025136, -0.1286172, -0.053476825, -0.07444334, -0.8131663, 0.5772511, 79.265594, 0, -32.931255)
+size = Vector3(1.1, 1.5, 1.2)
+
+[node name="EnemySpawner" parent="Objects" instance=ExtResource("3_05v1n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.840532, 0, -24.406616)
+
+[node name="EnemySpawner2" parent="Objects" instance=ExtResource("3_05v1n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.302963, 0, 2.1090508)
+
+[node name="EnemySpawner3" parent="Objects" instance=ExtResource("3_05v1n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.487427, 0, 39.53444)

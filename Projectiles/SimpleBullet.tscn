@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbi11henqrl06"]
+
+[ext_resource type="Script" uid="uid://8o1ti6liuu2r" path="res://Projectiles/simple_bullet.gd" id="1_3xocb"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_f5qe8"]
+radius = 0.11
+
+[node name="SimpleBullet" type="RigidBody3D" groups=["bullets"]]
+collision_layer = 65536
+collision_mask = 16777473
+script = ExtResource("1_3xocb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_f5qe8")
+
+[node name="RotationPivot" type="Node3D" parent="."]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="RotationPivot"]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="RotationPivot/CSGCombiner3D"]
+radius = 0.1
+
+[node name="LifeTime" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true

@@ -2,7 +2,7 @@ extends Camera3D
 class_name ShipCamera
 
 @export var follow_target: Node3D
-@export var height: float = 50.0  # Y offset above X-Z plane
+@export var height: float = 100.0  # Y offset above X-Z plane
 @export var smooth_speed: float = 5.0
 
 func _ready() -> void:
