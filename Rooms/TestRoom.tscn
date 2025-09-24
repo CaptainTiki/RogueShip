@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cepnqohmffd6l"]
+[gd_scene load_steps=11 format=3 uid="uid://cepnqohmffd6l"]
 
 [ext_resource type="Script" uid="uid://b5emlgfef83qm" path="res://Rooms/room.gd" id="1_uprbt"]
 [ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://Rooms/ship_camera.gd" id="2_5ojky"]
 [ext_resource type="PackedScene" uid="uid://3fp1iq0534gf" path="res://enemy_spawner.tscn" id="3_05v1n"]
+[ext_resource type="PackedScene" uid="uid://cwlem73vmxpvv" path="res://Rooms/RoomSystems/ExitPortal.tscn" id="4_p6ctf"]
 
 [sub_resource type="Gradient" id="Gradient_uprbt"]
 offsets = PackedFloat32Array(0.037656903, 0.8995816, 0.94351465)
@@ -160,9 +161,18 @@ size = Vector3(1.1, 1.5, 1.2)
 
 [node name="EnemySpawner" parent="Objects" instance=ExtResource("3_05v1n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.840532, 0, -24.406616)
+max_spawns = 1
 
 [node name="EnemySpawner2" parent="Objects" instance=ExtResource("3_05v1n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.302963, 0, 2.1090508)
+max_spawns = 1
 
 [node name="EnemySpawner3" parent="Objects" instance=ExtResource("3_05v1n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.487427, 0, 39.53444)
+max_spawns = 1
+
+[node name="Systems" type="Node3D" parent="."]
+
+[node name="ExitPortal" parent="Systems" instance=ExtResource("4_p6ctf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -63.62658)
+enabled = null

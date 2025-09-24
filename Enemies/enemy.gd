@@ -12,9 +12,12 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 
 func _on_hit_box_area_entered(area: Area3D) -> void:
-	if area.is_in_group("bullets"):
-		var bullet : Bullet = area.owner as Bullet  # Get the RigidBody3D root
+	if area.owner.is_in_group("bullets"):
+		var bullet: Bullet = area.owner as Bullet
 		if bullet:
 			health -= bullet.damage
+			print(health)
 			if health <= 0:
+				PlayerData.credits += 10  # Or score += 50
+				get_parent().enemy_killed()
 				queue_free()

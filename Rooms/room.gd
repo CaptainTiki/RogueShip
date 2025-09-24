@@ -1,17 +1,22 @@
 extends Node3D
 class_name Room
 
-@onready var camera_3d: ShipCamera = $Environment/Camera3D
+signal room_cleared
 
-# Called when the node enters the scene tree for the first time.
+@onready var exit_portal: ExitPortal = $Systems/ExitPortal
+
+var enemies_remaining: int = 0
+
 func _ready() -> void:
-	pass # Replace with function body.
+	# Count spawners' enemies
+	var spawners = get_tree().get_nodes_in_group("spawners")
+	for spawner in spawners:
+		if spawner is EnemySpawner:
+			enemies_remaining += spawner.max_spawns
+	exit_portal.disable()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
-func assign_camera_target(target: Node3D) -> void:
-	camera_3d.follow_target = target
-	pass
+func enemy_killed() -> void:
+	enemies_remaining -= 1
+	if enemies_remaining <= 0:
+		exit_portal.enable()

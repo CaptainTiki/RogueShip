@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://bel258yeeew1q"]
+
+[ext_resource type="Script" uid="uid://bexmfhie8j4ek" path="res://CarrierHub/carrier_hub.gd" id="1_6fmxc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bwmki"]
+font_size = 30
+
+[node name="CarrierHub" type="Node2D"]
+script = ExtResource("1_6fmxc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "Carrier Hub"
+label_settings = SubResource("LabelSettings_bwmki")
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Launch" type="Button" parent="CanvasLayer/VBoxContainer/CenterContainer2"]
+layout_mode = 2
+text = "Launch
+"
+
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/CenterContainer2/Launch" to="." method="_on_launch_pressed"]

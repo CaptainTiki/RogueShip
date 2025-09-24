@@ -6,7 +6,7 @@ class_name Player_Data
 @export var credits: int = 0  # Your in-game money for upgrades
 
 # Ship reference: We'll store the scene path or instance here
-@export var ship_scene: PackedScene = preload("uid://b717h2uu1gkng") #default to our playership scene - leave option to start game with other ships
+@export var ship_scene: PackedScene = preload("res://Ship/PlayerShip.tscn") #default to our playership scene - leave option to start game with other ships
 
 # Modifiers: Dictionary for boons/curses—easy to expand
 @export var modifiers: Dictionary = {
@@ -27,7 +27,21 @@ signal modifiers_updated()
 
 var ship_instance : PlayerShip
 
+func _ready() -> void:
+	# Skip early load; use get_ship instead
+	pass
+
+func get_ship() -> PlayerShip:
+	if ship_instance == null:
+		if ship_scene:
+			ship_instance = ship_scene.instantiate() as PlayerShip
+			if ship_instance == null:
+				push_error("Ship instantiate failed from " + ship_scene.resource_path)
+		else:
+			push_error("No ship_scene set in Player_Data")
+	return ship_instance
 
 func save_player_data() -> void:
-	prints("save_player_data() func empty")
-	pass
+	# Stub: Dump to console/file later
+	print("Saving data: score=", score, " credits=", credits, " mods=", modifiers)
+	# TODO: ResourceSaver.save to user://save.res

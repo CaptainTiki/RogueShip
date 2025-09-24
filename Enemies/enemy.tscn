@@ -18,7 +18,7 @@ script = ExtResource("1_3ih25")
 
 [node name="HitBox" type="Area3D" parent="."]
 collision_layer = 256
-collision_mask = 0
+collision_mask = 65536
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
 shape = SubResource("SphereShape3D_chnrf")
@@ -50,3 +50,5 @@ size = Vector3(0.2, 0.2, 0.44676512)
 
 [node name="BulletSpawn" type="Marker3D" parent="RotationPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.1992855)
+
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]

@@ -39,7 +39,7 @@ func spawn_enemy() -> void:
 	var spawn_pos = global_position + random_offset
 	
 	var enemy = enemy_scene.instantiate() as Enemy
-	get_tree().root.add_child(enemy)
+	get_tree().current_scene.add_child(enemy)
 	enemy.global_position = spawn_pos
 	spawned += 1
 	if spawned >= max_spawns:

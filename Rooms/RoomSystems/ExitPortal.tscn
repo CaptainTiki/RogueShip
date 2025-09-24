@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwlem73vmxpvv"]
+
+[ext_resource type="Script" uid="uid://bg2wdmmjgba6h" path="res://Rooms/RoomSystems/exit_portal.gd" id="1_e38ju"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e38ju"]
+size = Vector3(2.25, 0.15, 2.25)
+
+[node name="ExitPortal" type="Area3D"]
+collision_layer = 2
+script = ExtResource("1_e38ju")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_e38ju")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+size = Vector3(2, 0.1, 2)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

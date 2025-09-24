@@ -11,18 +11,21 @@ config_version=5
 [application]
 
 config/name="RogueShip"
-run/main_scene="uid://cejab2nv4wdce"
+run/main_scene="uid://bel258yeeew1q"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
+GameManager="*res://System/game_manager.gd"
 PlayerData="*res://System/Player_Data.gd"
 
 [global_group]
 
 bullets=""
 enemies=""
+spawners=""
+player=""
 
 [input]
 
@@ -65,6 +68,7 @@ boost={
 [layer_names]
 
 3d_physics/layer_1="Player"
+3d_physics/layer_2="Interactable"
 3d_physics/layer_9="Enemy"
 3d_physics/layer_17="Projectile"
 3d_physics/layer_25="Terrain"
