@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://u2exg11wopu"]
+[gd_scene load_steps=4 format=3 uid="uid://u2exg11wopu"]
 
 [ext_resource type="Script" uid="uid://p1jnjyxi2th4" path="res://level.gd" id="1_bexhn"]
-[ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://Rooms/ship_camera.gd" id="2_t7iv1"]
+[ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://System/ship_camera.gd" id="2_t7iv1"]
+[ext_resource type="PackedScene" uid="uid://befohhsfsw4gw" path="res://UI/HUD/HUD.tscn" id="3_2nifc"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_bexhn")
@@ -10,3 +11,5 @@ script = ExtResource("1_bexhn")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 50, 0)
 fov = 24.0
 script = ExtResource("2_t7iv1")
+
+[node name="UI" parent="." instance=ExtResource("3_2nifc")]

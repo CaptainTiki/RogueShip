@@ -1,59 +1,54 @@
 extends CharacterBody3D
 class_name PlayerShip
 
-@export var base_speed: float = 20.0  # Pixels/sec
-@export var base_damage: float = 10.0  # Per bullet
-@export var fire_rate: float = 0.2  # Seconds between shots
-@export var dodge_distance: float = 20.0  # Dash length
-@export var dodge_cooldown: float = 1.0  # Seconds
-@export var dodge_invuln_time: float = 0.3  # Invuln during dash
+@onready var rotation_pivot: Node3D = $RotationPivot
+@onready var camera: Camera3D = get_viewport().get_camera_3d()
+@onready var weapons_node: Node3D = $RotationPivot/Weapons
+@onready var hurtbox: Area3D = $HurtBox
+@onready var dodge_timer: Timer = $Utilities/DodgeTimer
+@onready var invuln_timer: Timer = $Utilities/InvulTimer
+@onready var ship_mod_manager: ShipModManager = ShipModManager.new()
 
-var speed: float = base_speed
-var damage: float = base_damage
-var can_shoot: bool = true
+@export var base_stats: ShipStats
+var stats: ShipStats
+
+var weapons: Array[Weapon] = []
+var current_weapon_index: int = 0
 var can_dodge: bool = true
 var is_invulnerable: bool = false
 
-@onready var shoot_timer: Timer = Timer.new()
-@onready var dodge_timer: Timer = Timer.new()
-@onready var invuln_timer: Timer = Timer.new()
-@onready var rotation_pivot: Node3D = $RotationPivot
-@onready var bullet_spawn: Node3D = $RotationPivot/BulletSpawn
-@onready var camera: Camera3D = get_viewport().get_camera_3d()
-@onready var bullet_scene: PackedScene = preload("res://Projectiles/SimpleBullet.tscn")
+var current_hull: float
+var current_shield: float
+var current_power: float
 
 func _ready() -> void:
+	stats = ShipStats.new()
 	
-	# Hook timers
-	add_child(shoot_timer)
-	shoot_timer.one_shot = true
-	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
-	add_child(dodge_timer)
-	dodge_timer.one_shot = true
-	dodge_timer.timeout.connect(_on_dodge_timer_timeout)
-	add_child(invuln_timer)
-	invuln_timer.one_shot = true
-	invuln_timer.timeout.connect(_on_invuln_timer_timeout)
+	current_hull = stats.max_hull
+	current_shield = stats.max_shield
+	current_power = stats.max_power
 	
-	# Pull from PlayerData
-	update_from_player_data()
-	PlayerData.modifiers_updated.connect(update_from_player_data)
+	# Grab all weapons under Weapons node
+	for weapon in weapons_node.get_children():
+		if weapon is Weapon:
+			weapons.append(weapon)
+			weapon.initialize()  # Setup timers in weapon
+	# Re-apply mods after weapons are loaded
+	ship_mod_manager.update_stats(self)
 
-func update_from_player_data() -> void:
-	# Apply modifiers
-	speed = base_speed * PlayerData.modifiers.get("speed_mult", 1.0)
-	damage = base_damage * PlayerData.modifiers.get("damage_mult", 1.0)
-
-func _physics_process(_delta: float) -> void:
-	# Movement: WASD or arrows, locked to X-Z plane
+func _physics_process(delta: float) -> void:
+	# Movement: Accelerate towards input dir
 	var move_input: Vector2 = Vector2(
 		Input.get_axis("move_left", "move_right"),
 		Input.get_axis("move_up", "move_down")
 	).normalized()
-	velocity = Vector3(move_input.x, 0, move_input.y) * speed
+	if move_input != Vector2.ZERO:
+		velocity = velocity.move_toward(Vector3(move_input.x, 0, move_input.y) * stats.top_speed, stats.acceleration * delta)
+	else:
+		velocity = velocity.move_toward(Vector3.ZERO, stats.acceleration * delta)
 	move_and_slide()
 	
-	# Aim: Raycast from camera to X-Z plane (y=0)
+	# Aiming: Lerp rotation_pivot towards aim dir
 	if camera:
 		var mouse_pos: Vector2 = get_viewport().get_mouse_position()
 		var ray_origin: Vector3 = camera.project_ray_origin(mouse_pos)
@@ -62,43 +57,64 @@ func _physics_process(_delta: float) -> void:
 		var aim_point: Variant = plane.intersects_ray(ray_origin, ray_dir)
 		if aim_point:
 			var look_dir: Vector3 = (aim_point - global_position).normalized()
-			rotation_pivot.rotation.y = atan2(look_dir.x, look_dir.z) - PI
+			var target_rot_y = atan2(look_dir.x, look_dir.z) - PI
+			rotation_pivot.rotation.y = lerp_angle(rotation_pivot.rotation.y, target_rot_y, stats.turn_rate * delta)
 	
-	# Shoot: Mouse click
-	if Input.is_action_pressed("fire_primary") and can_shoot:
-		shoot()
+	# Fire weapons, cycling through if power is low
+	if Input.is_action_pressed("fire_primary") and weapons.size() > 0:
+		var start_index = current_weapon_index
+		var try_count = 0
+		while try_count < weapons.size():
+			var weapon = weapons[current_weapon_index]
+			if weapon.can_fire and current_power >= weapon.wstat.power_cost:
+				weapon.shoot(rotation_pivot.rotation.y)
+				current_power -= weapon.wstat.power_cost
+				current_weapon_index = (current_weapon_index + 1) % weapons.size()
+				break
+			current_weapon_index = (current_weapon_index + 1) % weapons.size()
+			try_count += 1
+			if try_count >= weapons.size() and current_weapon_index == start_index:
+				break  # Avoid infinite loop if no weapon can fire
 	
-	# Dodge: Space + direction
-	if Input.is_action_just_pressed("dodge") and can_dodge:
-		dodge(move_input)
+	# Regens
+	current_power = min(current_power + stats.power_regen * delta, stats.max_power)
+	current_shield = min(current_shield + stats.shield_regen * delta, stats.max_shield)
 
-func shoot() -> void:
-	var bullet = bullet_scene.instantiate() as Bullet
-	get_tree().root.add_child(bullet)
-	bullet.global_position = bullet_spawn.global_position
-	var angle = rotation_pivot.rotation.y - PI
-	var direction = Vector3(sin(angle), 0, cos(angle))
-	bullet.linear_velocity = direction * bullet.speed
-	bullet.damage = damage
-	can_shoot = false
-	shoot_timer.start(fire_rate)
-	
 func dodge(direction: Vector2) -> void:
-	if direction == Vector2.ZERO:
+	if not can_dodge or direction == Vector2.ZERO:
 		var angle = rotation_pivot.rotation.y
 		direction = Vector2(-sin(angle), cos(angle))
-	var dodge_vector: Vector3 = Vector3(direction.x, 0, direction.y).normalized() * dodge_distance
-	velocity += dodge_vector / dodge_cooldown
+	var dodge_vector: Vector3 = Vector3(direction.x, 0, direction.y).normalized() * stats.dodge_length
+	velocity += dodge_vector / stats.dodge_cooldown
 	is_invulnerable = true
 	can_dodge = false
-	invuln_timer.start(dodge_invuln_time)
-	dodge_timer.start(dodge_cooldown)
-
-func _on_shoot_timer_timeout() -> void:
-	can_shoot = true
+	invuln_timer.start(stats.dodge_invuln)
+	dodge_timer.start(stats.dodge_cooldown)
 
 func _on_dodge_timer_timeout() -> void:
 	can_dodge = true
 
-func _on_invuln_timer_timeout() -> void:
+func _on_invul_timer_timeout() -> void:
 	is_invulnerable = false
+
+func _on_hurtbox_body_entered(body: Node3D) -> void:
+	if body.has_method("take_damage"):
+		body.take_damage(GameData.collision_damage)
+	if is_invulnerable:
+		return
+	if body.is_in_group("terrain"):
+		take_damage(GameData.collision_damage)
+	elif body.is_in_group("enemies"):
+		take_damage(GameData.collision_damage)
+
+func take_damage(amount: float) -> void:
+	var damage_after_armor = amount * (1.0 - stats.hull_armor)
+	current_hull = max(0, current_hull - damage_after_armor)
+	if current_hull <= 0:
+		die()
+
+func die() -> void:
+	print("Player died!")
+	await get_tree().create_timer(2.0).timeout
+	PlayerData.save_player_data()
+	GameManager.go_to_carrier_hub()

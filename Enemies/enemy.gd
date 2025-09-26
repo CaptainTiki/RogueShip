@@ -1,8 +1,15 @@
 extends CharacterBody3D
 class_name Enemy
 
-@export var speed: float = 10.0  # Pixels/sec
-@export var health: float = 20.0  # Takes 2 default bullets
+@export var max_hull: float = 30.0
+@export var speed: float = 10
+
+@onready var hurtbox: Area3D = $HurtBox
+
+var hull: float
+
+func _ready() -> void:
+	hull = max_hull
 
 func _physics_process(_delta: float) -> void:
 	# Chase player
@@ -15,9 +22,27 @@ func _on_hit_box_area_entered(area: Area3D) -> void:
 	if area.owner.is_in_group("bullets"):
 		var bullet: Bullet = area.owner as Bullet
 		if bullet:
-			health -= bullet.damage
-			print(health)
-			if health <= 0:
-				PlayerData.credits += 10  # Or score += 50
-				get_parent().enemy_killed()
-				queue_free()
+			take_damage(bullet.damage)
+
+func _on_hurtbox_body_entered(body: Node3D) -> void:
+	if body.is_in_group("terrain"):
+		take_damage(GameData.collision_damage)
+
+func take_damage(amount: float) -> void:
+	print("hit enemy: ", amount)
+	hull = max(0, hull - amount)
+	if hull <= 0:
+		die()
+
+func die() -> void:
+	#TODO: Drop Scrap / Module
+	if randf() < 0.75:  # 50% chance
+		var pickup = preload("res://Mods/ModPickup.tscn").instantiate()
+		pickup.mod = ModManager.get_random_unlocked_mod()
+		get_tree().root.add_child(pickup)
+		pickup.global_position = global_position
+	#TODO: add score to run score
+	# Notify room of enemy death
+	if get_tree().current_scene is Level:
+		get_tree().current_scene.enemy_killed()
+	queue_free()  # Remove enemy

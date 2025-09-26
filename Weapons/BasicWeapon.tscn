@@ -1,0 +1,14 @@
+[gd_scene load_steps=5 format=3 uid="uid://nft1vef6eakc"]
+
+[ext_resource type="Script" uid="uid://bxqr7ggdbx272" path="res://Weapons/weapon.gd" id="1_cro4g"]
+[ext_resource type="PackedScene" uid="uid://dbi11henqrl06" path="res://Projectiles/SimpleBullet.tscn" id="2_8ul6v"]
+[ext_resource type="Script" uid="uid://bpsr5jgm8t0pg" path="res://Weapons/weapon_stats.gd" id="3_vwb7t"]
+
+[sub_resource type="Resource" id="Resource_8ul6v"]
+script = ExtResource("3_vwb7t")
+fire_rate = 0.25
+metadata/_custom_type_script = "uid://bpsr5jgm8t0pg"
+
+[node name="BasicWeapon" type="Node3D"]
+script = ExtResource("1_cro4g")
+base_stat = SubResource("Resource_8ul6v")

@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 GameManager="*res://System/game_manager.gd"
 PlayerData="*res://System/Player_Data.gd"
+GameData="*res://System/game_data.gd"
+ModManager="*res://System/mod_manager.gd"
 
 [global_group]
 
@@ -26,6 +28,7 @@ bullets=""
 enemies=""
 spawners=""
 player=""
+terrain=""
 
 [input]
 

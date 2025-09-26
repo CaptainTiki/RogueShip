@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Mod" load_steps=2 format=3 uid="uid://bagiyiglf3fj8"]
+
+[ext_resource type="Script" uid="uid://b4pyggsssrf5a" path="res://Mods/Mod.gd" id="1_nohmh"]
+
+[resource]
+script = ExtResource("1_nohmh")
+name = "Splits"
+damage_mult = 0.85
+split_count = 2
+spread_angle = 15
+metadata/_custom_type_script = "uid://b4pyggsssrf5a"

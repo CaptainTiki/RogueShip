@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://vr3024yv72sc"]
+
+[ext_resource type="Script" uid="uid://cgchumcd1ia2l" path="res://Mods/mod_pickup.gd" id="1_b5lcq"]
+[ext_resource type="Resource" uid="uid://bowmk4rtnlk43" path="res://Mods/SprayNPrayMod.tres" id="2_mod"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mrxgs"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[node name="ModPickup" type="Area3D"]
+collision_layer = 2
+script = ExtResource("1_b5lcq")
+mod = ExtResource("2_mod")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_mrxgs")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+size = Vector3(0.5, 0.5, 0.5)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
