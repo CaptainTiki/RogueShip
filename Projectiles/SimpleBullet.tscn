@@ -31,8 +31,10 @@ autostart = true
 
 [node name="HitBox" type="Area3D" parent="."]
 collision_layer = 65536
-collision_mask = 0
+collision_mask = 257
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
 shape = SubResource("SphereShape3D_3xocb")
 debug_color = Color(1, 0, 0, 0.69411767)
+
+[connection signal="body_entered" from="HitBox" to="." method="_on_body_entered"]

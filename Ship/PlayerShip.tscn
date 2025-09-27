@@ -30,7 +30,7 @@ shape = SubResource("BoxShape3D_1hoos")
 debug_color = Color(1, 0, 0, 0.69411767)
 
 [node name="HurtBox" type="Area3D" parent="."]
-collision_mask = 16777472
+collision_mask = 16843008
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
 shape = SubResource("BoxShape3D_kocfl")

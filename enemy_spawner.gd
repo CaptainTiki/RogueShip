@@ -1,7 +1,7 @@
 extends Node3D
 class_name EnemySpawner
 
-@export var enemy_scene: PackedScene = preload("res://Enemies/enemy.tscn")
+@export var enemy_scenes: Array[PackedScene] = []
 @export var spawn_interval: float = 5.0
 @export var max_spawns: int = 3
 
@@ -14,6 +14,9 @@ func _ready() -> void:
 	add_child(timer)
 	timer.wait_time = spawn_interval
 	timer.timeout.connect(spawn_enemy)
+	if enemy_scenes.is_empty():
+		push_error("No enemy scenes assigned to EnemySpawner!")
+		return
 	timer.start()
 
 func spawn_enemy() -> void:
@@ -28,19 +31,23 @@ func spawn_enemy() -> void:
 		return
 	
 	var box_shape = collision_shape.shape as BoxShape3D
-	var extents = box_shape.size / 2.0  # Half-size for bounds
+	var extents = box_shape.size / 2.0
 	
 	# Random position within box, relative to spawner's global position
 	var random_offset = Vector3(
 		randf_range(-extents.x, extents.x),
-		0,  # Locked to y=0 for X-Z plane
+		0,
 		randf_range(-extents.z, extents.z)
 	)
 	var spawn_pos = global_position + random_offset
 	
+	# Pick random enemy scene
+	var enemy_scene = enemy_scenes[randi() % enemy_scenes.size()]
 	var enemy = enemy_scene.instantiate() as Enemy
 	get_tree().current_scene.add_child(enemy)
 	enemy.global_position = spawn_pos
+	print("Spawned enemy: ", enemy.name, " | Type: ", enemy_scene.resource_path)
+	
 	spawned += 1
 	if spawned >= max_spawns:
 		queue_free()

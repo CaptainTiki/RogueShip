@@ -27,10 +27,17 @@ func _physics_process(_delta: float) -> void:
 	pass
 
 func _on_body_entered(body: Node) -> void:
-	if body.is_in_group("enemies"):
-		# Apply damage (later with enemy script)
+	if body.is_in_group("player"):
+		print("player")
+		body.take_damage(damage)
 		current_pierce -= 1
 		if current_pierce < 0 and not bounce_enabled:
 			queue_free()
-	elif body.is_in_group("walls") and not bounce_enabled:
+	elif body.is_in_group("enemies"):
+		body.take_damage(damage)
+		current_pierce -= 1
+		if current_pierce < 0 and not bounce_enabled:
+			queue_free()
+	elif body.is_in_group("terrain") and not bounce_enabled:
+		print("terrain")
 		queue_free()

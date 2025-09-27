@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bg57py6i2fgvf"]
+[gd_scene load_steps=9 format=3 uid="uid://dcxf5vokqxhf1"]
 
-[ext_resource type="Script" uid="uid://ckuxbgq0crtpo" path="res://Enemies/enemy.gd" id="1_3ih25"]
-[ext_resource type="PackedScene" uid="uid://nft1vef6eakc" path="res://Weapons/BasicWeapon.tscn" id="2_bxkaj"]
+[ext_resource type="Script" uid="uid://ckuxbgq0crtpo" path="res://Enemies/enemy.gd" id="1_r161w"]
+[ext_resource type="PackedScene" uid="uid://nft1vef6eakc" path="res://Weapons/BasicWeapon.tscn" id="2_qy6p6"]
+[ext_resource type="PackedScene" uid="uid://dbi11henqrl06" path="res://Projectiles/SimpleBullet.tscn" id="3_4inqy"]
+[ext_resource type="Script" uid="uid://bpsr5jgm8t0pg" path="res://Weapons/weapon_stats.gd" id="4_i1djl"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_chnrf"]
 radius = 0.65
@@ -12,10 +14,17 @@ radius = 0.75
 [sub_resource type="SphereShape3D" id="SphereShape3D_bxkaj"]
 radius = 0.55
 
-[node name="Enemy" type="CharacterBody3D" groups=["enemies"]]
+[sub_resource type="Resource" id="Resource_h1cj6"]
+script = ExtResource("4_i1djl")
+scale = Vector3(2, 2, 2)
+fire_rate = 2.0
+damage = 25.0
+metadata/_custom_type_script = "uid://bpsr5jgm8t0pg"
+
+[node name="SeekNRam_Cannon" type="CharacterBody3D" groups=["enemies"]]
 collision_layer = 256
 collision_mask = 16777473
-script = ExtResource("1_3ih25")
+script = ExtResource("1_r161w")
 
 [node name="HitBox" type="Area3D" parent="."]
 collision_layer = 256
@@ -48,15 +57,15 @@ size = Vector3(0.2, 0.20527345, 0.2)
 
 [node name="Weapons" type="Node3D" parent="RotationPivot"]
 
-[node name="BasicWeapon" parent="RotationPivot/Weapons" instance=ExtResource("2_bxkaj")]
-transform = Transform3D(1, 0, -0.0001744926, 0, 1, 0, 0.0001744926, 0, 1, -0.008759201, 0, -0.5443008)
+[node name="Cannon" parent="RotationPivot/Weapons" instance=ExtResource("2_qy6p6")]
+base_stat = SubResource("Resource_h1cj6")
 
-[node name="Muzzle" type="Marker3D" parent="RotationPivot/Weapons/BasicWeapon"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.9066837)
+[node name="Muzzle" type="Marker3D" parent="RotationPivot/Weapons/Cannon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.1992855)
 
-[node name="BasicWeaponMesh" type="CSGBox3D" parent="RotationPivot/Weapons/BasicWeapon"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.023935735, -0.35553867)
-size = Vector3(0.2, 0.2, 0.8290771)
+[node name="WeaponMesh" type="CSGBox3D" parent="RotationPivot/Weapons/Cannon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.023935735, -0.65992284)
+size = Vector3(0.2, 0.2, 0.44676512)
 
 [node name="StaggerTimer" type="Timer" parent="."]
 wait_time = 0.25
