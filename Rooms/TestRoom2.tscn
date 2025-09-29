@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dr4e20uel7m3b"]
+[gd_scene load_steps=21 format=3 uid="uid://dr4e20uel7m3b"]
 
 [ext_resource type="Script" uid="uid://b5emlgfef83qm" path="res://Rooms/room.gd" id="1_6e8ba"]
 [ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://System/ship_camera.gd" id="2_y1ib1"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://dcxf5vokqxhf1" path="res://Enemies/SeekNRamEnemy.tscn" id="7_1ig0v"]
 [ext_resource type="PackedScene" uid="uid://du2b2b2yjioc3" path="res://Enemies/CircleSnipeMG.tscn" id="8_s5q13"]
 [ext_resource type="PackedScene" uid="uid://csh8qxtu53sjs" path="res://Rooms/RoomSystems/Portal.tscn" id="9_6e8ba"]
+[ext_resource type="PackedScene" uid="uid://cvwlvb7f8un4s" path="res://Enemies/CircleSnipeElite.tscn" id="9_y1ib1"]
+[ext_resource type="Script" uid="uid://ch4l8m8r8eo6k" path="res://Enemies/DestroyBehaviors/on_destroy.gd" id="10_ya8ij"]
 
 [sub_resource type="Gradient" id="Gradient_uprbt"]
 offsets = PackedFloat32Array(0.037656903, 0.8995816, 0.94351465)
@@ -43,6 +45,10 @@ albedo_texture = ExtResource("5_kwbgh")
 [sub_resource type="QuadMesh" id="QuadMesh_6tpxg"]
 material = SubResource("StandardMaterial3D_2je50")
 size = Vector2(400, 400)
+
+[sub_resource type="Resource" id="Resource_gkw7o"]
+script = ExtResource("10_ya8ij")
+metadata/_custom_type_script = "uid://ch4l8m8r8eo6k"
 
 [node name="TestRoom2" type="Node3D"]
 script = ExtResource("1_6e8ba")
@@ -208,6 +214,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.477112, 0, 26.15789)
 
 [node name="CircleSnipe_MG3" parent="Objects/Enemies" instance=ExtResource("8_s5q13")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.360031, 0, 59.330807)
+
+[node name="Elite_CircleSnipe" parent="Objects/Enemies" instance=ExtResource("9_y1ib1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.755508, 0, 71.78616)
+on_destroy_script = SubResource("Resource_gkw7o")
 
 [node name="Systems" type="Node3D" parent="."]
 

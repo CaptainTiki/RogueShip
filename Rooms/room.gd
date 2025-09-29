@@ -22,7 +22,6 @@ func enemy_killed() -> void:
 
 func spawn_portal() -> void:
 	portal.enable()
-	portal.connect("room_selected", _on_portal_room_selected)
 
 func _on_portal_room_selected(room_path: String) -> void:
 	var level = get_tree().current_scene as Level

@@ -28,7 +28,6 @@ func _physics_process(_delta: float) -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
-		print("player")
 		body.take_damage(damage)
 		current_pierce -= 1
 		if current_pierce < 0 and not bounce_enabled:

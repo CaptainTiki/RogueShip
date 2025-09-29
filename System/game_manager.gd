@@ -20,7 +20,7 @@ func start_level(room_path: String = "") -> void:
 
 func go_to_carrier_hub() -> void:
 	run_room_count = 0
-	get_tree().change_scene_to_file("res://CarrierHub.tscn")
+	get_tree().change_scene_to_file("res://CarrierHub/CarrierHub.tscn")
 
 func next_room(room_path: String) -> void:
 	run_room_count += 1

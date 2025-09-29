@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d21ukg1r47kdw"]
+
+[ext_resource type="Script" uid="uid://ch4l8m8r8eo6k" path="res://Enemies/DestroyBehaviors/on_destroy.gd" id="1_6b6d4"]
+
+[node name="OnDestroy" type="Node3D"]
+script = ExtResource("1_6b6d4")

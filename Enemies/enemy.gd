@@ -7,6 +7,11 @@ class_name Enemy
 @export var flee_threshold: float = 0.25
 @export var turn_rate: float = 5.0
 @export var behavior: EnemyBehavior  # Custom behavior script
+@export var on_destroy_script: OnDestroy  # Script to handle death drops
+
+@export var is_elite: bool = false
+@export var is_mini_boss: bool = false
+@export var is_boss: bool = false
 
 @onready var hurtbox: Area3D = $HurtBox
 @onready var attack_timer: Timer = $AttackTimer
@@ -80,12 +85,18 @@ func take_damage(amount: float) -> void:
 		die_scored()
 
 func die_scored() -> void:
-	if randf() < 0.25:
-		var pickup = preload("res://Mods/ModPickup.tscn").instantiate()
-		pickup.mod = ModManager.get_random_unlocked_mod()
-		get_tree().root.add_child(pickup)
-		pickup.global_position = global_position
-	# TODO: Add to player score here if implemented
+	print("die_scored")
+	if on_destroy_script:
+		print("on_destroy")
+		on_destroy_script.handle_destroy(self)
+		await on_destroy_script.destroy_handled  # Wait for handle_destroy to finish
+	else:
+		# Default grunt behavior
+		if randf() < 0.75:  # Existing drop chance
+			var pickup = preload("res://Mods/ModPickup.tscn").instantiate()
+			pickup.mod = ModManager.get_random_unlocked_mod()
+			get_tree().root.add_child(pickup)
+			pickup.global_position = global_position
 	if get_tree().current_scene is Level:
 		get_tree().current_scene.enemy_killed()  # Decrement count
 	queue_free()

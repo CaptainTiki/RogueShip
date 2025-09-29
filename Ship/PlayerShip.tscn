@@ -19,6 +19,7 @@ size = Vector3(1.3, 1.3, 1.3)
 
 [node name="PlayerShip" type="CharacterBody3D" groups=["player"]]
 collision_mask = 16843009
+axis_lock_linear_y = true
 script = ExtResource("1_1hoos")
 base_stats = SubResource("Resource_hrnj0")
 
