@@ -31,7 +31,7 @@ func shoot(ship_rotation_y: float):
 			direction = base_direction.rotated(Vector3.UP, angle)
 		
 		var bullet = wstat.projo_scene.instantiate() as Bullet
-		get_tree().root.add_child(bullet)
+		get_tree().current_scene.current_room.add_child(bullet)# Parent to room instead of level
 		bullet.global_position = muzzle.global_position
 		bullet.linear_velocity = direction * bullet.speed
 		bullet.damage = wstat.damage

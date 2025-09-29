@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctb7nmiytho8y"]
+
+[ext_resource type="Script" uid="uid://cdq51udrwgffh" path="res://rotate.gd" id="1_u87q6"]
+
+[node name="Asteroid" type="CSGBox3D" groups=["terrain"]]
+transform = Transform3D(0.78389937, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208879, -0.70548517, 0.34174392, 0, 0, 0)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1.5, 4, 2)
+script = ExtResource("1_u87q6")

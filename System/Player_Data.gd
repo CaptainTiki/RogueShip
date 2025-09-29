@@ -22,18 +22,10 @@ signal modifiers_updated()
 var ship_instance : PlayerShip
 var ship_stats: ShipStats = ShipStats.new()
 
-func _ready() -> void:
-	# Skip early load; use get_ship instead
-	pass
-
 func get_ship() -> PlayerShip:
 	if ship_instance == null:
 		if ship_scene:
 			ship_instance = ship_scene.instantiate() as PlayerShip
-			if ship_instance == null:
-				push_error("Ship instantiate failed from " + ship_scene.resource_path)
-			else:
-				print("get_ship: Successfully instantiated ", ship_instance)
 		else:
 			push_error("No ship_scene set in Player_Data")
 	return ship_instance

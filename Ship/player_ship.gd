@@ -10,12 +10,14 @@ class_name PlayerShip
 @onready var ship_mod_manager: ShipModManager = ShipModManager.new()
 
 @export var base_stats: ShipStats
+@export var shipsize : Vector3 = Vector3(1,1,1)
 var stats: ShipStats
 
 var weapons: Array[Weapon] = []
 var current_weapon_index: int = 0
 var can_dodge: bool = true
 var is_invulnerable: bool = false
+var level : Level = null
 
 var current_hull: float
 var current_shield: float
@@ -35,6 +37,8 @@ func _ready() -> void:
 			weapon.initialize()  # Setup timers in weapon
 	# Re-apply mods after weapons are loaded
 	ship_mod_manager.update_stats(self)
+	
+	level = GameManager.current_level
 
 func _physics_process(delta: float) -> void:
 	# Movement: Accelerate towards input dir
@@ -47,6 +51,10 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity = velocity.move_toward(Vector3.ZERO, stats.acceleration * delta)
 	move_and_slide()
+	# Clamp to play area
+	var bounds = level.get_play_bounds()
+	global_position.x = clamp(global_position.x, bounds.min_x + shipsize.x, bounds.max_x - shipsize.x)
+	global_position.z = clamp(global_position.z, bounds.min_z + shipsize.z, bounds.max_z - shipsize.z)
 	
 	# Aiming: Lerp rotation_pivot towards aim dir
 	if camera:
@@ -117,4 +125,4 @@ func die() -> void:
 	print("Player died!")
 	await get_tree().create_timer(2.0).timeout
 	PlayerData.save_player_data()
-	GameManager.go_to_carrier_hub()
+	level.player_death()

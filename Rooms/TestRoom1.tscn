@@ -1,0 +1,178 @@
+[gd_scene load_steps=18 format=3 uid="uid://cepnqohmffd6l"]
+
+[ext_resource type="Script" uid="uid://b5emlgfef83qm" path="res://Rooms/room.gd" id="1_uprbt"]
+[ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://System/ship_camera.gd" id="2_5ojky"]
+[ext_resource type="PackedScene" uid="uid://ctb7nmiytho8y" path="res://asteroid.tscn" id="3_2je50"]
+[ext_resource type="PackedScene" uid="uid://3fp1iq0534gf" path="res://enemy_spawner.tscn" id="3_05v1n"]
+[ext_resource type="Texture2D" uid="uid://re10swpn2ibj" path="res://Assets/Space/Blue Nebula/Blue Nebula 1 - 1024x1024.png" id="4_2safh"]
+[ext_resource type="PackedScene" uid="uid://n775a0ysc84b" path="res://Enemies/BoomNZoomEnemy.tscn" id="6_m3pp0"]
+[ext_resource type="PackedScene" uid="uid://dcxf5vokqxhf1" path="res://Enemies/SeekNRamEnemy.tscn" id="7_kgm4x"]
+[ext_resource type="PackedScene" uid="uid://du2b2b2yjioc3" path="res://Enemies/CircleSnipeMG.tscn" id="8_oqx7d"]
+[ext_resource type="PackedScene" uid="uid://csh8qxtu53sjs" path="res://Rooms/RoomSystems/Portal.tscn" id="9_xbxl6"]
+
+[sub_resource type="Gradient" id="Gradient_uprbt"]
+offsets = PackedFloat32Array(0.037656903, 0.8995816, 0.94351465)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5ojky"]
+noise_type = 2
+frequency = 0.0571
+fractal_octaves = 3
+fractal_gain = 1.945
+cellular_jitter = 0.24
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_05v1n"]
+width = 2048
+height = 2048
+noise = SubResource("FastNoiseLite_5ojky")
+color_ramp = SubResource("Gradient_uprbt")
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_p6ctf"]
+panorama = SubResource("NoiseTexture2D_05v1n")
+
+[sub_resource type="Sky" id="Sky_2safh"]
+sky_material = SubResource("PanoramaSkyMaterial_p6ctf")
+
+[sub_resource type="Environment" id="Environment_2je50"]
+background_mode = 2
+sky = SubResource("Sky_2safh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2je50"]
+albedo_texture = ExtResource("4_2safh")
+
+[sub_resource type="QuadMesh" id="QuadMesh_6tpxg"]
+material = SubResource("StandardMaterial3D_2je50")
+size = Vector2(400, 400)
+
+[node name="TestRoom1" type="Node3D"]
+script = ExtResource("1_uprbt")
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="MainLight" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.858112, -0.38958094, 0.33447066, 0.12406237, 0.47478902, 0.8713119, -0.4982493, 0.789178, -0.3590897, 0, 0, 32.59497)
+light_energy = 1.2
+shadow_enabled = true
+sky_mode = 1
+
+[node name="AccentLight" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.7164005, -0.4942279, -0.49245217, 0.67876047, -0.33041608, -0.6558273, 0.161414, -0.80409217, 0.5721725, -3.177672, 0, 32.59497)
+light_energy = 0.5
+shadow_enabled = true
+sky_mode = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_2je50")
+
+[node name="Camera3D" type="Camera3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 50, 0)
+fov = 24.0
+script = ExtResource("2_5ojky")
+
+[node name="Objects" type="Node3D" parent="."]
+
+[node name="Walls" type="Node3D" parent="Objects"]
+
+[node name="LeftWall" type="CSGBox3D" parent="Objects/Walls" groups=["terrain"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 0)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1, 1, 200)
+
+[node name="RightWall" type="CSGBox3D" parent="Objects/Walls" groups=["terrain"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 0)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1, 1, 200)
+
+[node name="BottomWall2" type="CSGBox3D" parent="Objects/Walls" groups=["terrain"]]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 100)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1, 1, 100)
+
+[node name="TopWall2" type="CSGBox3D" parent="Objects/Walls" groups=["terrain"]]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -100)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1, 1, 100)
+
+[node name="Hazards" type="Node3D" parent="Objects"]
+
+[node name="Asteroid" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, -11.905979, 0, 64.26637)
+x_amt = 0.25
+
+[node name="Asteroid2" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, -24.313728, 0, -6.024887)
+x_amt = 0.0
+y_amt = 0.2
+z_amt = 0.2
+
+[node name="Asteroid3" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, 25.072504, 0, 85.838776)
+y_amt = 0.25
+
+[node name="Asteroid4" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, 4.6166706, 0, 15.493549)
+x_amt = 0.0
+z_amt = 0.15
+
+[node name="Asteroid5" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, -11.905979, 0, -61.420547)
+x_amt = 0.15
+z_amt = 0.25
+
+[node name="EnemySpawner" parent="Objects/Hazards" instance=ExtResource("3_05v1n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.840532, 0, -62.411037)
+
+[node name="EnemySpawner2" parent="Objects/Hazards" instance=ExtResource("3_05v1n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.454016, 0, -25.926916)
+
+[node name="EnemySpawner3" parent="Objects/Hazards" instance=ExtResource("3_05v1n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.113914, 0, 39.53444)
+
+[node name="Background" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -70, 0)
+mesh = SubResource("QuadMesh_6tpxg")
+
+[node name="Enemies" type="Node3D" parent="Objects"]
+
+[node name="BoomNZoom_SG" parent="Objects/Enemies" instance=ExtResource("6_m3pp0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.799216, 0, 44.981133)
+
+[node name="BoomNZoom_SG2" parent="Objects/Enemies" instance=ExtResource("6_m3pp0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.81601, 0, 12.390738)
+
+[node name="BoomNZoom_SG3" parent="Objects/Enemies" instance=ExtResource("6_m3pp0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.09309, 0, -23.222185)
+
+[node name="SeekNRam_Cannon" parent="Objects/Enemies" instance=ExtResource("7_kgm4x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.680965, 0, 38.041718)
+
+[node name="SeekNRam_Cannon2" parent="Objects/Enemies" instance=ExtResource("7_kgm4x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.699162, 0, 9.690224)
+
+[node name="SeekNRam_Cannon3" parent="Objects/Enemies" instance=ExtResource("7_kgm4x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.049919, 0, -50.0439)
+
+[node name="SeekNRam_Cannon4" parent="Objects/Enemies" instance=ExtResource("7_kgm4x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.872875, 0, -84.57944)
+
+[node name="CircleSnipe_MG" parent="Objects/Enemies" instance=ExtResource("8_oqx7d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.199625, 0, -10.023956)
+
+[node name="CircleSnipe_MG2" parent="Objects/Enemies" instance=ExtResource("8_oqx7d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.477112, 0, 26.15789)
+
+[node name="CircleSnipe_MG3" parent="Objects/Enemies" instance=ExtResource("8_oqx7d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.360031, 0, 59.330807)
+
+[node name="Systems" type="Node3D" parent="."]
+
+[node name="Portal" parent="Systems" instance=ExtResource("9_xbxl6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -90.80699)

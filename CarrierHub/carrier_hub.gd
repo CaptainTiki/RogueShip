@@ -5,5 +5,10 @@ func _ready() -> void:
 	pass
 
 func _on_launch_pressed() -> void:
-	# For now, always load TestRoom.tscn
-	GameManager.start_level("res://Rooms/TestRoom.tscn")
+	var transition = preload("res://UI/Menus/TransitionScene.tscn").instantiate()
+	get_tree().root.add_child(transition)
+	transition.fade_out()
+	await transition.transition_complete
+	GameManager.transition_instance = transition
+	GameManager.start_level()
+	queue_free()

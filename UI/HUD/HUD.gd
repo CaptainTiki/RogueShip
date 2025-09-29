@@ -8,9 +8,6 @@ class_name UI
 @onready var power_bar: ProgressBar = $VBoxContainer/PowerBar
 @onready var power_label: Label = $VBoxContainer/PowerBar/PowerLabel
 
-func _ready() -> void:
-	print("UI _ready: ship_instance = ", PlayerData.ship_instance)
-
 func _process(_delta: float) -> void:
 	if not PlayerData.ship_instance:
 		return

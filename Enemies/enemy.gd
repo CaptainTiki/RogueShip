@@ -25,26 +25,28 @@ func _ready() -> void:
 	hull = max_hull
 	target = PlayerData.ship_instance
 	if not behavior:
-		print("ERROR: No behavior assigned for enemy ", name)
+		printerr("ERROR: No behavior assigned for enemy ", name)
 	else:
-		# Grab all weapons under Weapons node
 		for weapon in weapons_node.get_children():
 			if weapon is Weapon:
 				weapons.append(weapon)
-				weapon.initialize()  # Setup timers in weapon
+				weapon.initialize()
+	set_physics_process(false)  # Dormant
+	attack_timer.stop()  # Ensure off
+
+func activate() -> void:
+	set_physics_process(true)
 	attack_timer.start()
 
 func _physics_process(delta: float) -> void:
 	if not target or is_staggered:
 		velocity = Vector3.ZERO
-		print("No target or staggered: ", name, " | Target: ", target, " | Staggered: ", is_staggered)
 		return
 	_update_state()
 	# Rotate to face target
 	var dir = (target.global_position - global_position).normalized()
 	var target_rot_y = atan2(dir.x, dir.z) - PI
 	$RotationPivot.rotation.y = lerp_angle($RotationPivot.rotation.y, target_rot_y, turn_rate * delta)
-	print("Enemy: ", name, " | Rot Y: ", $RotationPivot.rotation.y, " | Target Rot: ", target_rot_y)
 	# Run behavior
 	if behavior:
 		behavior.run(self, delta)
@@ -52,7 +54,6 @@ func _physics_process(delta: float) -> void:
 
 func _update_state() -> void:
 	var dist_to_target = global_position.distance_to(target.global_position)
-	print("Enemy: ", name, " | Dist to target: ", dist_to_target, " | State: ", current_state, " | Hull: ", hull)
 	if hull / max_hull < flee_threshold:
 		current_state = "flee"
 	elif dist_to_target <= attack_range:
@@ -67,28 +68,31 @@ func _perform_attack() -> void:
 	attack_timer.start()
 
 func _on_hurtbox_body_entered(body: Node3D) -> void:
-	print("Hurtbox hit by: ", body.name, " | Groups: ", body.get_groups())
 	if body.is_in_group("terrain"):
 		take_damage(GameData.collision_damage)
 
 func take_damage(amount: float) -> void:
-	print("Enemy hit: ", name, " | Damage: ", amount, " | Hull left: ", hull - amount)
 	hull = max(0, hull - amount)
 	if hull > 0:
 		is_staggered = true
 		stagger_timer.start(0.25)
 	if hull <= 0:
-		die()
+		die_scored()
 
-func die() -> void:
-	print("Enemy died: ", name, " | Hull was: ", hull)
-	if randf() < 0.1:
+func die_scored() -> void:
+	if randf() < 0.25:
 		var pickup = preload("res://Mods/ModPickup.tscn").instantiate()
 		pickup.mod = ModManager.get_random_unlocked_mod()
 		get_tree().root.add_child(pickup)
 		pickup.global_position = global_position
+	# TODO: Add to player score here if implemented
 	if get_tree().current_scene is Level:
-		get_tree().current_scene.enemy_killed()
+		get_tree().current_scene.enemy_killed()  # Decrement count
+	queue_free()
+
+func die_unscored() -> void:
+	if get_tree().current_scene is Level:
+		get_tree().current_scene.enemy_killed()  # Still decrement for clear
 	queue_free()
 
 func _on_attack_timeout() -> void:

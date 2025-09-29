@@ -1,18 +1,28 @@
 extends Node
-class_name Game_Manager
 
-@export var carrier_hub_scene: PackedScene = preload("res://CarrierHub/CarrierHub.tscn")
-@export var level_scene: PackedScene = preload("res://Level.tscn")
-var current_room_path: String = "res://scenes/TestRoom.tscn" #default room
-var current_level: Level
+var current_room_path: String = ""
+var current_level: Level = null
+var transition_instance: CanvasLayer = null
+var room_list: Array[String] = [
+	"res://Rooms/TestRoom1.tscn",
+    "res://Rooms/TestRoom2.tscn"
+]
+var run_room_count: int = 0
+var max_rooms: int = 3  # Standard -> Standard/Treasure -> Boss
 
-func _ready() -> void:
-	# Start in carrier hub
-	go_to_carrier_hub()
+func start_level(room_path: String = "") -> void:
+	run_room_count = 1
+	if room_path == "":
+		current_room_path = room_list[randi() % room_list.size()]
+	else:
+		current_room_path = room_path
+	get_tree().change_scene_to_file("res://Level.tscn")
 
 func go_to_carrier_hub() -> void:
-	get_tree().change_scene_to_packed(carrier_hub_scene)
+	run_room_count = 0
+	get_tree().change_scene_to_file("res://CarrierHub.tscn")
 
-func start_level(room_path: String = current_room_path) -> void:
+func next_room(room_path: String) -> void:
+	run_room_count += 1
 	current_room_path = room_path
-	get_tree().change_scene_to_packed(level_scene)
+	get_tree().change_scene_to_file("res://Level.tscn")

@@ -2,12 +2,13 @@ extends Node3D
 class_name EnemySpawner
 
 @export var enemy_scenes: Array[PackedScene] = []
-@export var spawn_interval: float = 5.0
+@export var spawn_interval: float = 1.0
 @export var max_spawns: int = 3
 
 @onready var timer: Timer = Timer.new()
-@onready var spawn_area: Area3D = $SpawnArea
+@onready var spawn_area: EnemySpawner = $"."
 
+var level: Level = null  # Cache for room access
 var spawned: int = 0
 
 func _ready() -> void:
@@ -17,6 +18,12 @@ func _ready() -> void:
 	if enemy_scenes.is_empty():
 		push_error("No enemy scenes assigned to EnemySpawner!")
 		return
+	# Don't start timer here—wait for activate
+	level = get_tree().current_scene as Level
+
+func activate() -> void:
+	if not timer.is_stopped():
+		return  # Prevent double-start
 	timer.start()
 
 func spawn_enemy() -> void:
@@ -44,10 +51,17 @@ func spawn_enemy() -> void:
 	# Pick random enemy scene
 	var enemy_scene = enemy_scenes[randi() % enemy_scenes.size()]
 	var enemy = enemy_scene.instantiate() as Enemy
-	get_tree().current_scene.add_child(enemy)
+	level.current_room.add_child(enemy)  # Parent to room for easy cleanup
 	enemy.global_position = spawn_pos
-	print("Spawned enemy: ", enemy.name, " | Type: ", enemy_scene.resource_path)
 	
 	spawned += 1
+	if level and level.current_room:
+		level.current_room.enemies_remaining += 1  # Increment on actual spawn
+	
+	enemy.activate()  # Wake it up immediately
+	
 	if spawned >= max_spawns:
 		queue_free()
+
+func destroy() -> void:
+	queue_free()

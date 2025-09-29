@@ -1,9 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcxf5vokqxhf1"]
+[gd_scene load_steps=11 format=3 uid="uid://dcxf5vokqxhf1"]
 
 [ext_resource type="Script" uid="uid://ckuxbgq0crtpo" path="res://Enemies/enemy.gd" id="1_r161w"]
+[ext_resource type="Script" uid="uid://tg2toctpffjv" path="res://Enemies/Enemy_Behaviors/seek_n_ram_behavior.gd" id="2_i1djl"]
 [ext_resource type="PackedScene" uid="uid://nft1vef6eakc" path="res://Weapons/BasicWeapon.tscn" id="2_qy6p6"]
 [ext_resource type="PackedScene" uid="uid://dbi11henqrl06" path="res://Projectiles/SimpleBullet.tscn" id="3_4inqy"]
 [ext_resource type="Script" uid="uid://bpsr5jgm8t0pg" path="res://Weapons/weapon_stats.gd" id="4_i1djl"]
+
+[sub_resource type="Resource" id="Resource_pyno2"]
+script = ExtResource("2_i1djl")
+metadata/_custom_type_script = "uid://tg2toctpffjv"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_chnrf"]
 radius = 0.65
@@ -22,9 +27,10 @@ damage = 25.0
 metadata/_custom_type_script = "uid://bpsr5jgm8t0pg"
 
 [node name="SeekNRam_Cannon" type="CharacterBody3D" groups=["enemies"]]
-collision_layer = 256
+collision_layer = 768
 collision_mask = 16777473
 script = ExtResource("1_r161w")
+behavior = SubResource("Resource_pyno2")
 
 [node name="HitBox" type="Area3D" parent="."]
 collision_layer = 256

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://csh8qxtu53sjs"]
+
+[ext_resource type="Script" uid="uid://dwbi3vtdkkpry" path="res://Rooms/RoomSystems/portal.gd" id="1_cex8e"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cex8e"]
+size = Vector3(2, 1, 2)
+
+[node name="Portal" type="Area3D"]
+script = ExtResource("1_cex8e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_cex8e")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+size = Vector3(2, 0.25, 2)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

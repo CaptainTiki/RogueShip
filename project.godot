@@ -73,6 +73,7 @@ boost={
 3d_physics/layer_1="Player"
 3d_physics/layer_2="Interactable"
 3d_physics/layer_9="Enemy"
+3d_physics/layer_10="Activations"
 3d_physics/layer_17="Projectile"
 3d_physics/layer_25="Terrain"
 3d_physics/layer_26="Hazard"
