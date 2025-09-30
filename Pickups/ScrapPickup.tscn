@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://72nqr4llrrbk"]
+
+[ext_resource type="Script" uid="uid://7er3ki64ga53" path="res://Pickups/scrap_pickup.gd" id="1_bj2nq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mrxgs"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[node name="ScrapPickup" type="Area3D"]
+collision_layer = 2
+script = ExtResource("1_bj2nq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_mrxgs")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+size = Vector3(0.5, 0.5, 0.5)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

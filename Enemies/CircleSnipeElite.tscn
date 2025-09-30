@@ -1,14 +1,19 @@
-[gd_scene load_steps=11 format=3 uid="uid://cvwlvb7f8un4s"]
+[gd_scene load_steps=13 format=3 uid="uid://cvwlvb7f8un4s"]
 
 [ext_resource type="Script" uid="uid://ckuxbgq0crtpo" path="res://Enemies/enemy.gd" id="1_4fxk5"]
 [ext_resource type="Script" uid="uid://58r0qsihuhvs" path="res://Enemies/Enemy_Behaviors/circle_snipe_behavior.gd" id="2_ruvkv"]
 [ext_resource type="PackedScene" uid="uid://nft1vef6eakc" path="res://Weapons/BasicWeapon.tscn" id="3_isu0r"]
+[ext_resource type="Script" uid="uid://ch4l8m8r8eo6k" path="res://Enemies/DestroyBehaviors/on_destroy.gd" id="3_ruvkv"]
 [ext_resource type="PackedScene" uid="uid://dbi11henqrl06" path="res://Projectiles/SimpleBullet.tscn" id="4_c5meh"]
 [ext_resource type="Script" uid="uid://bpsr5jgm8t0pg" path="res://Weapons/weapon_stats.gd" id="5_et2vy"]
 
 [sub_resource type="Resource" id="Resource_ruvkv"]
 script = ExtResource("2_ruvkv")
 metadata/_custom_type_script = "uid://58r0qsihuhvs"
+
+[sub_resource type="Resource" id="Resource_isu0r"]
+script = ExtResource("3_ruvkv")
+metadata/_custom_type_script = "uid://ch4l8m8r8eo6k"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_chnrf"]
 radius = 0.65
@@ -37,6 +42,7 @@ attack_range = 35.0
 flee_threshold = 0.5
 turn_rate = 0.3
 behavior = SubResource("Resource_ruvkv")
+on_destroy_script = SubResource("Resource_isu0r")
 is_elite = true
 
 [node name="HitBox" type="Area3D" parent="."]

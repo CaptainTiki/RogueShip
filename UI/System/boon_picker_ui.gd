@@ -34,14 +34,13 @@ func _format_curse(mod: Mod) -> String:
 func _on_module_button_pressed(index: int) -> void:
 	if index < modules.size():
 		var mod = modules[index]
-		var ship = PlayerData.get_ship()  # Grabs or instantiates the ship
-		ship.mod_manager.add_mod(mod)     # Adds the Mod resource to mods array
-		ship.mod_manager.update_stats(ship)  # Resets to base, applies all mods
+		var ship : PlayerShip = PlayerData.get_ship()  # Grabs or instantiates the ship
+		ship.ship_mod_manager.add_mod(mod)     # Adds the Mod resource to mods array
+		ship.ship_mod_manager.update_stats(ship)  # Resets to base, applies all mods
 		
 		# Optional: Track in PlayerData for save/UI later
+		#TODO: Notify playerdata that we have a mod, so it can mark it as found
 		PlayerData.active_boons.append(mod.name)
-		if mod.damage_mult < 1.0:  # Simple curse detection example
-			PlayerData.active_curses.append(mod.name + "_DamageCurse")
 		PlayerData.modifiers_updated.emit()  # If you want to keep this signal for future UI
 		
 	get_tree().paused = false

@@ -1,0 +1,152 @@
+[gd_scene load_steps=16 format=3 uid="uid://bho22au1a6qjc"]
+
+[ext_resource type="Script" uid="uid://ci5xeii5kkg2k" path="res://Rooms/treasure_room.gd" id="1_tc3cg"]
+[ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://System/ship_camera.gd" id="2_i6f0q"]
+[ext_resource type="Texture2D" uid="uid://c358muww5blvr" path="res://Assets/Space/Green Nebula/Green Nebula 6 - 1024x1024.png" id="3_0qyrt"]
+[ext_resource type="PackedScene" uid="uid://xpy3tw3rbbbe" path="res://Pickups/BoonPickup.tscn" id="4_nfs15"]
+[ext_resource type="PackedScene" uid="uid://vr3024yv72sc" path="res://Pickups/ModPickup.tscn" id="5_27xkt"]
+[ext_resource type="PackedScene" uid="uid://72nqr4llrrbk" path="res://Pickups/ScrapPickup.tscn" id="6_0ivce"]
+[ext_resource type="PackedScene" uid="uid://csh8qxtu53sjs" path="res://Rooms/RoomSystems/Portal.tscn" id="7_hd5wc"]
+
+[sub_resource type="Gradient" id="Gradient_uprbt"]
+offsets = PackedFloat32Array(0.037656903, 0.8995816, 0.94351465)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5ojky"]
+noise_type = 2
+frequency = 0.0571
+fractal_octaves = 3
+fractal_gain = 1.945
+cellular_jitter = 0.24
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_05v1n"]
+width = 2048
+height = 2048
+noise = SubResource("FastNoiseLite_5ojky")
+color_ramp = SubResource("Gradient_uprbt")
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_p6ctf"]
+panorama = SubResource("NoiseTexture2D_05v1n")
+
+[sub_resource type="Sky" id="Sky_2safh"]
+sky_material = SubResource("PanoramaSkyMaterial_p6ctf")
+
+[sub_resource type="Environment" id="Environment_2je50"]
+background_mode = 2
+sky = SubResource("Sky_2safh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2je50"]
+albedo_texture = ExtResource("3_0qyrt")
+
+[sub_resource type="QuadMesh" id="QuadMesh_6tpxg"]
+material = SubResource("StandardMaterial3D_2je50")
+size = Vector2(400, 400)
+
+[node name="TreasureRoomTest" type="Node3D" node_paths=PackedStringArray("treasure_scene")]
+script = ExtResource("1_tc3cg")
+treasure_scene = NodePath("Objects/BoonPickup")
+room_type = 2
+room_min_x = -12.5
+room_max_x = 12.5
+room_min_z = -12.5
+room_max_z = 12.5
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="MainLight" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.858112, -0.38958094, 0.33447066, 0.12406237, 0.47478902, 0.8713119, -0.4982493, 0.789178, -0.3590897, 0, 0, 32.59497)
+light_energy = 1.2
+shadow_enabled = true
+sky_mode = 1
+
+[node name="AccentLight" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.7164005, -0.4942279, -0.49245217, 0.67876047, -0.33041608, -0.6558273, 0.161414, -0.80409217, 0.5721725, -3.177672, 0, 32.59497)
+light_energy = 0.5
+shadow_enabled = true
+sky_mode = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_2je50")
+
+[node name="Camera3D" type="Camera3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 50, 0)
+fov = 24.0
+script = ExtResource("2_i6f0q")
+
+[node name="Objects" type="Node3D" parent="."]
+
+[node name="Walls" type="Node3D" parent="Objects"]
+
+[node name="LeftWall" type="CSGBox3D" parent="Objects/Walls" groups=["terrain"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 0, 0)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1, 1, 25)
+
+[node name="RightWall" type="CSGBox3D" parent="Objects/Walls" groups=["terrain"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 0, 0)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1, 1, 25)
+
+[node name="BottomWall2" type="CSGBox3D" parent="Objects/Walls" groups=["terrain"]]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 12.5)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1, 1, 25)
+
+[node name="TopWall2" type="CSGBox3D" parent="Objects/Walls" groups=["terrain"]]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -12.5)
+use_collision = true
+collision_layer = 16777216
+collision_mask = 0
+size = Vector3(1, 1, 25)
+
+[node name="Hazards" type="Node3D" parent="Objects"]
+
+[node name="Background" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -70, 0)
+mesh = SubResource("QuadMesh_6tpxg")
+
+[node name="Enemies" type="Node3D" parent="Objects"]
+
+[node name="BoonPickup" parent="Objects" instance=ExtResource("4_nfs15")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12552273, 0, -2.4583986)
+
+[node name="ModPickup" parent="Objects" instance=ExtResource("5_27xkt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.065553, 0, 5.009712)
+
+[node name="ModPickup2" parent="Objects" instance=ExtResource("5_27xkt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.768221, 0, -1.7633524)
+
+[node name="ScrapPickup" parent="Objects" instance=ExtResource("6_0ivce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.7085295, 0, 5.619336)
+
+[node name="ScrapPickup5" parent="Objects" instance=ExtResource("6_0ivce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.160818, 0, 4.36947)
+
+[node name="ScrapPickup6" parent="Objects" instance=ExtResource("6_0ivce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4934473, 0, 5.346397)
+
+[node name="ScrapPickup7" parent="Objects" instance=ExtResource("6_0ivce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.7210627, 0, 6.975937)
+
+[node name="ScrapPickup8" parent="Objects" instance=ExtResource("6_0ivce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.213646, 0, 7.597315)
+
+[node name="ScrapPickup2" parent="Objects" instance=ExtResource("6_0ivce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.044775, 0, -4.6548185)
+
+[node name="ScrapPickup3" parent="Objects" instance=ExtResource("6_0ivce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.78765, 0, -3.5951219)
+
+[node name="ScrapPickup4" parent="Objects" instance=ExtResource("6_0ivce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.4727826, 0, -3.4323235)
+
+[node name="Systems" type="Node3D" parent="."]
+
+[node name="Portal" parent="Systems" instance=ExtResource("7_hd5wc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.793205)

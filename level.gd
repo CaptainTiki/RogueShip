@@ -20,20 +20,29 @@ func _ready() -> void:
 	else:
 		push_error("Failed to get ship in Level")
 	load_room(GameManager.current_room_path)
-	if playspace and current_room:
-		var room_bounds = current_room.get_room_bounds()
-		ship.global_position = Vector3(0, 0, room_bounds.max_z - 5)
-		playspace.global_position.z = room_bounds.max_z - 25
-		playspace_stop_location = current_room.get_room_bounds().min_z - get_play_bounds().center_z + get_play_bounds().max_z
-		
+	setup_positions()
+	
 	if GameManager.transition_instance:
 		GameManager.transition_instance.fade_in()
 		GameManager.transition_instance = null
 
+func setup_positions() -> void:
+	if playspace and current_room:
+		var room_bounds = current_room.get_room_bounds()
+		if current_room.room_type in [Room.RoomType.STANDARD, Room.RoomType.PUZZLE]:
+			PlayerData.ship_instance.global_position = Vector3(0, 0, room_bounds.max_z - 5)
+			playspace.global_position.z = room_bounds.max_z - 25
+			var play_bounds = get_play_bounds()
+			playspace_stop_location = room_bounds.min_z - play_bounds.center_z + play_bounds.max_z
+		else:  # WAVE, TREASURE, BOSS - center everything
+			var mid_z = (room_bounds.min_z + room_bounds.max_z) / 2.0
+			PlayerData.ship_instance.global_position = Vector3(0, 0, mid_z)
+			playspace.global_position.z = mid_z
 
 func _physics_process(delta: float) -> void:
-	if playspace and playspace.global_position.z >= playspace_stop_location:
-		playspace.global_position.z -= scroll_speed * delta
+	if current_room and current_room.room_type in [Room.RoomType.STANDARD, Room.RoomType.PUZZLE]:
+		if playspace and playspace.global_position.z >= playspace_stop_location:
+			playspace.global_position.z -= scroll_speed * delta
 
 func get_play_bounds() -> Dictionary:
 	if playspace:
@@ -64,13 +73,14 @@ func next_room(room_path: String) -> void:
 	await transition.transition_complete
 	if current_room:
 		current_room.queue_free()
+		await current_room.tree_exited
 	load_room(room_path)
+	setup_positions()
 	if current_room:
 		var room_bounds = current_room.get_room_bounds()
 		PlayerData.ship_instance.global_position = Vector3(0, 0, room_bounds.max_z - 5)
 		playspace.global_position.z = room_bounds.max_z - 25
 	transition.fade_in()
-	GameManager.transition_instance = null
 
 func _on_room_cleared() -> void:
 	if GameManager.run_room_count >= GameManager.max_rooms:

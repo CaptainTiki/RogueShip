@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cr7gmpprpb3bc" path="res://UI/System/boon_picker_ui.gd" id="1_37j2o"]
 
 [node name="BoonPickerUi" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_37j2o")
 
 [node name="Panel" type="Panel" parent="."]
@@ -37,6 +38,6 @@ text = "Module 2"
 layout_mode = 2
 text = "Module 3"
 
-[connection signal="pressed" from="Panel/VBoxContainer/ModuleButton1" to="." method="_on_module_button_pressed" binds= [1]]
-[connection signal="pressed" from="Panel/VBoxContainer/ModuleButton2" to="." method="_on_module_button_pressed" binds= [2]]
-[connection signal="pressed" from="Panel/VBoxContainer/ModuleButton3" to="." method="_on_module_button_pressed" binds= [3]]
+[connection signal="pressed" from="Panel/VBoxContainer/ModuleButton1" to="." method="_on_module_button_pressed" binds= [0]]
+[connection signal="pressed" from="Panel/VBoxContainer/ModuleButton2" to="." method="_on_module_button_pressed" binds= [1]]
+[connection signal="pressed" from="Panel/VBoxContainer/ModuleButton3" to="." method="_on_module_button_pressed" binds= [2]]

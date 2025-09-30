@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bo0t7bxhivdvj"]
-
-[ext_resource type="Script" uid="uid://7er3ki64ga53" path="res://scrap_pickup.gd" id="1_bj2nq"]
-
-[node name="ScrapPickup" type="Node3D"]
-script = ExtResource("1_bj2nq")
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
-radius = 0.75

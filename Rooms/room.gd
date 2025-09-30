@@ -3,22 +3,34 @@ class_name Room
 
 signal room_cleared
 
+enum RoomType {
+	STANDARD,
+	WAVE,
+	TREASURE,
+	PUZZLE,
+	BOSS
+}
+
+@export_category("Room Type")
+@export var room_type: RoomType = RoomType.STANDARD
+@export_category("Room Size")
+@export var room_min_x: float = -50.0
+@export var room_max_x: float = 50.0
+@export var room_min_z: float = -100.0
+@export var room_max_z: float = 100.0
+
 @onready var portal: Area3D = $Systems/Portal
 
 var enemies_remaining: int = 0
-var room_min_x: float = -50.0
-var room_max_x: float = 50.0
-var room_min_z: float = -100.0
-var room_max_z: float = 100.0
 
 func _ready() -> void:
+	reset_room()
+
+func reset_room() -> void:
 	portal.disable()
 
 func enemy_killed() -> void:
-	enemies_remaining -= 1
-	if enemies_remaining <= 0:
-		emit_signal("room_cleared")
-		spawn_portal()
+	pass
 
 func spawn_portal() -> void:
 	portal.enable()

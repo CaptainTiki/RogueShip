@@ -1,6 +1,8 @@
 extends Node3D
 class_name EnemySpawner
 
+signal spawner_empty
+
 @export var enemy_scenes: Array[PackedScene] = []
 @export var spawn_interval: float = 1.0
 @export var max_spawns: int = 3
@@ -61,6 +63,7 @@ func spawn_enemy() -> void:
 	enemy.activate()  # Wake it up immediately
 	
 	if spawned >= max_spawns:
+		spawner_empty.emit()
 		queue_free()
 
 func destroy() -> void:

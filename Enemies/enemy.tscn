@@ -1,7 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bg57py6i2fgvf"]
+[gd_scene load_steps=8 format=3 uid="uid://bg57py6i2fgvf"]
 
 [ext_resource type="Script" uid="uid://ckuxbgq0crtpo" path="res://Enemies/enemy.gd" id="1_3ih25"]
+[ext_resource type="Script" uid="uid://ch4l8m8r8eo6k" path="res://Enemies/DestroyBehaviors/on_destroy.gd" id="2_47qgu"]
 [ext_resource type="PackedScene" uid="uid://nft1vef6eakc" path="res://Weapons/BasicWeapon.tscn" id="2_bxkaj"]
+
+[sub_resource type="Resource" id="Resource_572h1"]
+script = ExtResource("2_47qgu")
+metadata/_custom_type_script = "uid://ch4l8m8r8eo6k"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_chnrf"]
 radius = 0.65
@@ -17,6 +22,7 @@ collision_layer = 768
 collision_mask = 16777473
 axis_lock_linear_y = true
 script = ExtResource("1_3ih25")
+on_destroy_script = SubResource("Resource_572h1")
 
 [node name="HitBox" type="Area3D" parent="."]
 collision_layer = 256

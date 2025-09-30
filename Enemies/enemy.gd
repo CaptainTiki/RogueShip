@@ -85,15 +85,12 @@ func take_damage(amount: float) -> void:
 		die_scored()
 
 func die_scored() -> void:
-	print("die_scored")
 	if on_destroy_script:
-		print("on_destroy")
 		on_destroy_script.handle_destroy(self)
-		await on_destroy_script.destroy_handled  # Wait for handle_destroy to finish
 	else:
 		# Default grunt behavior
 		if randf() < 0.75:  # Existing drop chance
-			var pickup = preload("res://Mods/ModPickup.tscn").instantiate()
+			var pickup = preload("res://Pickups/ModPickup.tscn").instantiate()
 			pickup.mod = ModManager.get_random_unlocked_mod()
 			get_tree().root.add_child(pickup)
 			pickup.global_position = global_position

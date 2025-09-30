@@ -1,16 +1,12 @@
-[gd_scene load_steps=21 format=3 uid="uid://cepnqohmffd6l"]
+[gd_scene load_steps=16 format=3 uid="uid://cepnqohmffd6l"]
 
-[ext_resource type="Script" uid="uid://b5emlgfef83qm" path="res://Rooms/room.gd" id="1_uprbt"]
-[ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://System/ship_camera.gd" id="2_5ojky"]
-[ext_resource type="PackedScene" uid="uid://ctb7nmiytho8y" path="res://asteroid.tscn" id="3_2je50"]
-[ext_resource type="PackedScene" uid="uid://3fp1iq0534gf" path="res://enemy_spawner.tscn" id="3_05v1n"]
-[ext_resource type="Texture2D" uid="uid://re10swpn2ibj" path="res://Assets/Space/Blue Nebula/Blue Nebula 1 - 1024x1024.png" id="4_2safh"]
-[ext_resource type="PackedScene" uid="uid://n775a0ysc84b" path="res://Enemies/BoomNZoomEnemy.tscn" id="6_m3pp0"]
-[ext_resource type="PackedScene" uid="uid://dcxf5vokqxhf1" path="res://Enemies/SeekNRamEnemy.tscn" id="7_kgm4x"]
-[ext_resource type="PackedScene" uid="uid://du2b2b2yjioc3" path="res://Enemies/CircleSnipeMG.tscn" id="8_oqx7d"]
-[ext_resource type="PackedScene" uid="uid://cvwlvb7f8un4s" path="res://Enemies/CircleSnipeElite.tscn" id="9_0f007"]
-[ext_resource type="PackedScene" uid="uid://csh8qxtu53sjs" path="res://Rooms/RoomSystems/Portal.tscn" id="9_xbxl6"]
-[ext_resource type="Script" uid="uid://ch4l8m8r8eo6k" path="res://Enemies/DestroyBehaviors/on_destroy.gd" id="10_3vpxf"]
+[ext_resource type="Script" uid="uid://b5ky0qm16qw84" path="res://Rooms/standard_room.gd" id="1_3fj3x"]
+[ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://System/ship_camera.gd" id="2_f6n5m"]
+[ext_resource type="PackedScene" uid="uid://ctb7nmiytho8y" path="res://asteroid.tscn" id="3_lx1py"]
+[ext_resource type="PackedScene" uid="uid://3fp1iq0534gf" path="res://enemy_spawner.tscn" id="4_dgwvu"]
+[ext_resource type="Texture2D" uid="uid://re10swpn2ibj" path="res://Assets/Space/Blue Nebula/Blue Nebula 1 - 1024x1024.png" id="5_criir"]
+[ext_resource type="PackedScene" uid="uid://cvwlvb7f8un4s" path="res://Enemies/CircleSnipeElite.tscn" id="6_qplgm"]
+[ext_resource type="PackedScene" uid="uid://csh8qxtu53sjs" path="res://Rooms/RoomSystems/Portal.tscn" id="7_t5y07"]
 
 [sub_resource type="Gradient" id="Gradient_uprbt"]
 offsets = PackedFloat32Array(0.037656903, 0.8995816, 0.94351465)
@@ -40,18 +36,14 @@ background_mode = 2
 sky = SubResource("Sky_2safh")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2je50"]
-albedo_texture = ExtResource("4_2safh")
+albedo_texture = ExtResource("5_criir")
 
 [sub_resource type="QuadMesh" id="QuadMesh_6tpxg"]
 material = SubResource("StandardMaterial3D_2je50")
 size = Vector2(400, 400)
 
-[sub_resource type="Resource" id="Resource_5ivmf"]
-script = ExtResource("10_3vpxf")
-metadata/_custom_type_script = "uid://ch4l8m8r8eo6k"
-
-[node name="TestRoom1" type="Node3D"]
-script = ExtResource("1_uprbt")
+[node name="StandardRoomTest" type="Node3D"]
+script = ExtResource("1_3fj3x")
 
 [node name="Environment" type="Node3D" parent="."]
 
@@ -73,7 +65,7 @@ environment = SubResource("Environment_2je50")
 [node name="Camera3D" type="Camera3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 50, 0)
 fov = 24.0
-script = ExtResource("2_5ojky")
+script = ExtResource("2_f6n5m")
 
 [node name="Objects" type="Node3D" parent="."]
 
@@ -109,37 +101,37 @@ size = Vector3(1, 1, 100)
 
 [node name="Hazards" type="Node3D" parent="Objects"]
 
-[node name="Asteroid" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+[node name="Asteroid" parent="Objects/Hazards" instance=ExtResource("3_lx1py")]
 transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, -11.905979, 0, 64.26637)
 x_amt = 0.25
 
-[node name="Asteroid2" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+[node name="Asteroid2" parent="Objects/Hazards" instance=ExtResource("3_lx1py")]
 transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, -24.313728, 0, -6.024887)
 x_amt = 0.0
 y_amt = 0.2
 z_amt = 0.2
 
-[node name="Asteroid3" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+[node name="Asteroid3" parent="Objects/Hazards" instance=ExtResource("3_lx1py")]
 transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, 25.072504, 0, 85.838776)
 y_amt = 0.25
 
-[node name="Asteroid4" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+[node name="Asteroid4" parent="Objects/Hazards" instance=ExtResource("3_lx1py")]
 transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, 4.6166706, 0, 15.493549)
 x_amt = 0.0
 z_amt = 0.15
 
-[node name="Asteroid5" parent="Objects/Hazards" instance=ExtResource("3_2je50")]
+[node name="Asteroid5" parent="Objects/Hazards" instance=ExtResource("3_lx1py")]
 transform = Transform3D(0.7838993, -0.5587799, 0.27067843, 0, 0.4359538, 0.89996904, -0.6208878, -0.70548517, 0.34174392, -11.905979, 0, -61.420547)
 x_amt = 0.15
 z_amt = 0.25
 
-[node name="EnemySpawner" parent="Objects/Hazards" instance=ExtResource("3_05v1n")]
+[node name="EnemySpawner" parent="Objects/Hazards" instance=ExtResource("4_dgwvu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.840532, 0, -62.411037)
 
-[node name="EnemySpawner2" parent="Objects/Hazards" instance=ExtResource("3_05v1n")]
+[node name="EnemySpawner2" parent="Objects/Hazards" instance=ExtResource("4_dgwvu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.454016, 0, -25.926916)
 
-[node name="EnemySpawner3" parent="Objects/Hazards" instance=ExtResource("3_05v1n")]
+[node name="EnemySpawner3" parent="Objects/Hazards" instance=ExtResource("4_dgwvu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.113914, 0, 39.53444)
 
 [node name="Background" type="MeshInstance3D" parent="Objects"]
@@ -148,26 +140,10 @@ mesh = SubResource("QuadMesh_6tpxg")
 
 [node name="Enemies" type="Node3D" parent="Objects"]
 
-[node name="BoomNZoom_SG" parent="Objects/Enemies" instance=ExtResource("6_m3pp0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.799216, 0, 44.981133)
-
-[node name="SeekNRam_Cannon" parent="Objects/Enemies" instance=ExtResource("7_kgm4x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.680965, 0, 38.041718)
-
-[node name="SeekNRam_Cannon4" parent="Objects/Enemies" instance=ExtResource("7_kgm4x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.872875, 0, -84.57944)
-
-[node name="CircleSnipe_MG" parent="Objects/Enemies" instance=ExtResource("8_oqx7d")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.199625, 0, -10.023956)
-
-[node name="CircleSnipe_MG2" parent="Objects/Enemies" instance=ExtResource("9_0f007")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.693138, 0, 50.113113)
-
-[node name="CircleSnipe_MG3" parent="Objects/Enemies" instance=ExtResource("9_0f007")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.693138, 0, -76.43097)
-on_destroy_script = SubResource("Resource_5ivmf")
+[node name="Elite_CircleSnipe" parent="Objects/Enemies" instance=ExtResource("6_qplgm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 43.160988)
 
 [node name="Systems" type="Node3D" parent="."]
 
-[node name="Portal" parent="Systems" instance=ExtResource("9_xbxl6")]
+[node name="Portal" parent="Systems" instance=ExtResource("7_t5y07")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -90.80699)

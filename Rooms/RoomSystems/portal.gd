@@ -25,8 +25,10 @@ func _on_body_entered(body: Node) -> void:
 
 func get_room_choices() -> Array[String]:
 	if GameManager.run_room_count >= GameManager.max_rooms - 1:
-		return ["res://Rooms/TestRoom2.tscn"]  # Boss room (placeholder)
-	return GameManager.room_list
+		return ["Boss"]  # Boss room (placeholder)
+	var possible_types: Array[String] = ["Standard", "Wave", "Treasure"]
+	possible_types.shuffle()
+	return possible_types.slice(0, randi_range(2, 3))
 
 func show_room_selection_ui(choices: Array[String]) -> void:
 	var ui = preload("res://UI/System/RoomSelectionUI.tscn").instantiate()

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://xpy3tw3rbbbe"]
+
+[ext_resource type="Script" uid="uid://1rp6ax5nqkkj" path="res://Pickups/boon_pickup.gd" id="1_7n6it"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mrxgs"]
+size = Vector3(1.25, 1.25, 1.25)
+
+[node name="BoonPickup" type="Area3D"]
+collision_layer = 2
+script = ExtResource("1_7n6it")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_mrxgs")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
