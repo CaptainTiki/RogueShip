@@ -1,13 +1,17 @@
 extends Room
 class_name WaveRoom
 
+@export var spawn_delay: float = 3.0  # Delay before spawners start
+
 var spawners: Array[Node] = []
 var active_spawners: int = 0
 
 func _ready() -> void:
+	print("wave room ready")
 	reset_room()
 
 func reset_room() -> void:
+	print("wave room reset")
 	portal.disable()
 	enemies_remaining = 0
 	spawners.clear()
@@ -21,7 +25,7 @@ func reset_room() -> void:
 		var hazards = objects.get_node_or_null("Hazards")
 		if hazards:
 			for hazard in hazards.get_children():
-				if hazard.is_in_group("spawner"):
+				if hazard.is_in_group("spawners"):
 					spawners.append(hazard)
 					active_spawners += 1
 					if hazard.has_signal("spawner_empty"):
@@ -31,6 +35,20 @@ func reset_room() -> void:
 							enemies_remaining += 1
 							if enemy.has_signal("died"):
 								enemy.died.connect(enemy_killed)
+	
+	# Start timer for delayed spawning
+	var delay_timer = Timer.new()
+	delay_timer.wait_time = spawn_delay
+	delay_timer.one_shot = true
+	add_child(delay_timer)
+	delay_timer.timeout.connect(_start_spawners)
+	delay_timer.start()
+
+func _start_spawners() -> void:
+	print("activating spawners")
+	for spawner in spawners:
+		if spawner.has_method("activate"):
+			spawner.activate()
 
 func enemy_killed() -> void:
 	enemies_remaining -= 1

@@ -12,3 +12,8 @@ func _on_launch_pressed() -> void:
 	GameManager.transition_instance = transition
 	GameManager.start_level()
 	queue_free()
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("debug"):
+		var debug_menu = preload("res://UI/Debug/debug_load.tscn").instantiate()
+		add_child(debug_menu)  # Add to hub so it can call _on_launch_pressed

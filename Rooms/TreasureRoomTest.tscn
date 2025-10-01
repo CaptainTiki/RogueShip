@@ -42,9 +42,9 @@ albedo_texture = ExtResource("3_0qyrt")
 material = SubResource("StandardMaterial3D_2je50")
 size = Vector2(400, 400)
 
-[node name="TreasureRoomTest" type="Node3D" node_paths=PackedStringArray("treasure_scene")]
+[node name="TreasureRoomTest" type="Node3D" node_paths=PackedStringArray("main_treasure")]
 script = ExtResource("1_tc3cg")
-treasure_scene = NodePath("Objects/BoonPickup")
+main_treasure = NodePath("Objects/BoonPickup")
 room_type = 2
 room_min_x = -12.5
 room_max_x = 12.5
@@ -114,7 +114,7 @@ mesh = SubResource("QuadMesh_6tpxg")
 [node name="Enemies" type="Node3D" parent="Objects"]
 
 [node name="BoonPickup" parent="Objects" instance=ExtResource("4_nfs15")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12552273, 0, -2.4583986)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.008390784, 0, -5.02808)
 
 [node name="ModPickup" parent="Objects" instance=ExtResource("5_27xkt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.065553, 0, 5.009712)

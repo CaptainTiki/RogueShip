@@ -24,6 +24,7 @@ func _ready() -> void:
 	level = get_tree().current_scene as Level
 
 func activate() -> void:
+	print("spawner activated")
 	if not timer.is_stopped():
 		return  # Prevent double-start
 	timer.start()

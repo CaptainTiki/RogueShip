@@ -21,8 +21,11 @@ var boss_rooms: Array[String] = ["res://Rooms/BossRoomTest.tscn"]
 	
 func start_level(room_path: String = "") -> void:
 	run_room_count = 1
-	if room_path == "":
-		current_room_path = room_list[randi() % room_list.size()]
+	if DebugRuntime.room_override != "":
+		current_room_path = DebugRuntime.room_override
+		DebugRuntime.room_override = ""  # Reset for next time
+	elif room_path == "":
+		current_room_path = standard_rooms[randi() % standard_rooms.size()]
 	else:
 		current_room_path = room_path
 	get_tree().change_scene_to_file("res://Level.tscn")

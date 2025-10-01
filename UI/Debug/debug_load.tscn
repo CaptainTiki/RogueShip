@@ -1,0 +1,82 @@
+[gd_scene load_steps=2 format=3 uid="uid://bo738gad1e1r2"]
+
+[ext_resource type="Script" uid="uid://bclhyi2bdxwr5" path="res://UI/Debug/debug_load.gd" id="1_eij20"]
+
+[node name="DebugLoad" type="CanvasLayer"]
+script = ExtResource("1_eij20")
+
+[node name="Popup" type="Popup" parent="."]
+oversampling_override = 1.0
+size = Vector2i(400, 600)
+visible = true
+min_size = Vector2i(400, 600)
+
+[node name="Panel" type="Panel" parent="Popup"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Popup"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Popup/VBoxContainer"]
+layout_mode = 2
+text = "Debug Room Selector"
+
+[node name="TabContainer" type="TabContainer" parent="Popup/VBoxContainer"]
+layout_mode = 2
+current_tab = 0
+
+[node name="Standard" type="ItemList" parent="Popup/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(100, 300)
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Wave" type="ItemList" parent="Popup/VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 300)
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Treasure" type="ItemList" parent="Popup/VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 300)
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Puzzle" type="ItemList" parent="Popup/VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 300)
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="Boss" type="ItemList" parent="Popup/VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 300)
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Popup/VBoxContainer"]
+layout_mode = 2
+
+[node name="LaunchButton" type="Button" parent="Popup/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Launch"
+
+[node name="CancelButton" type="Button" parent="Popup/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[connection signal="item_selected" from="Popup/VBoxContainer/TabContainer/Standard" to="." method="_on_room_list_item_selected"]
+[connection signal="item_selected" from="Popup/VBoxContainer/TabContainer/Wave" to="." method="_on_room_list_item_selected"]
+[connection signal="item_selected" from="Popup/VBoxContainer/TabContainer/Treasure" to="." method="_on_room_list_item_selected"]
+[connection signal="item_selected" from="Popup/VBoxContainer/TabContainer/Puzzle" to="." method="_on_room_list_item_selected"]
+[connection signal="item_selected" from="Popup/VBoxContainer/TabContainer/Boss" to="." method="_on_room_list_item_selected"]
+[connection signal="pressed" from="Popup/VBoxContainer/HBoxContainer/LaunchButton" to="." method="_on_launch_pressed"]
+[connection signal="pressed" from="Popup/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_pressed"]

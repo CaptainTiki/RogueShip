@@ -1,7 +1,7 @@
 extends Room
 class_name TreasureRoom
 
-@export var treasure_scene: Node3D
+@export var main_treasure: Node3D  # Drag your central BoonPickup here in the editor
 
 func _ready() -> void:
 	reset_room()
@@ -12,7 +12,7 @@ func reset_room() -> void:
 	var objects = get_node_or_null("Objects")
 	if objects:
 		for child in objects.get_children():
-			if child.is_in_group("scrap") or (child.is_in_group("boon") and child != get_treasure_node()):
+			if (child.is_in_group("scrap") or child.is_in_group("boon")) and child != main_treasure:
 				child.queue_free()
 		var enemies = objects.get_node_or_null("Enemies")
 		if enemies:
@@ -20,22 +20,14 @@ func reset_room() -> void:
 				enemies_remaining += 1
 				if enemy.has_signal("died"):
 					enemy.died.connect(enemy_killed)
-		var treasure = get_treasure_node()
-		if treasure and treasure.has_signal("picked_up"):
-			treasure.picked_up.connect(_on_treasure_picked_up)
+	if main_treasure and main_treasure.has_signal("picked_up"):
+		main_treasure.picked_up.connect(_on_treasure_picked_up)
 
 func enemy_killed() -> void:
 	enemies_remaining -= 1
+	# Optional: want enemies to gate the portal too, add check_room_cleared() here
 
 func _on_treasure_picked_up() -> void:
-	print("spawning portal")
+	print("Treasure picked up - spawning portal")
 	emit_signal("room_cleared")
 	spawn_portal()
-
-func get_treasure_node() -> Node:
-	var objects = get_node_or_null("Objects")
-	if objects:
-		for child in objects.get_children():
-			if child.is_in_group("boon") and (not treasure_scene or child.scene_file_path == treasure_scene.resource_path):
-				return child
-	return null
