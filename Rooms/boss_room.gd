@@ -16,44 +16,18 @@ func reset_room() -> void:
 				child.queue_free()
 		var enemies = objects.get_node_or_null("Enemies")
 		if enemies:
-			var boss = get_boss_node(enemies)
-			if boss and boss.has_signal("died"):
-				boss.died.connect(_on_boss_killed)
+			if boss_scene and boss_scene.has_signal("destroyed"):
+				boss_scene.destroyed.connect(_on_boss_killed)
 			for enemy in enemies.get_children():
-				if enemy != boss:
+				if enemy != boss_scene:
 					enemies_remaining += 1
-					if enemy.has_signal("died"):
-						enemy.died.connect(enemy_killed)
+					if enemy.has_signal("destroyed"):
+						enemy.destroyed.connect(enemy_killed)
 
 func enemy_killed() -> void:
 	enemies_remaining -= 1
 
 func _on_boss_killed() -> void:
-	clear_remaining_enemies()
+	print("boss killed")
 	emit_signal("room_cleared")
 	spawn_portal()
-
-func get_boss_node(enemies: Node) -> Node:
-	if enemies:
-		for child in enemies.get_children():
-			if boss_scene and child.scene_file_path == boss_scene.resource_path:
-				return child
-			if child.is_in_group("boss"):  # Fallback to boss group
-				return child
-	return null
-
-func clear_remaining_enemies() -> void:
-	var objects = get_node_or_null("Objects")
-	if objects:
-		var enemies = objects.get_node_or_null("Enemies")
-		if enemies:
-			for enemy in enemies.get_children():
-				if enemy.has_method("die_unscored"):
-					enemy.die_unscored()
-				elif enemy.has_method("destroy"):
-					enemy.destroy()
-		var hazards = objects.get_node_or_null("Hazards")
-		if hazards:
-			for hazard in hazards.get_children():
-				if hazard.is_in_group("spawner") and hazard.has_method("destroy"):
-					hazard.destroy()

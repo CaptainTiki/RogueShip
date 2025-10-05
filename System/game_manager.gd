@@ -48,5 +48,6 @@ func get_random_room_for_type(type: int) -> String:
 	
 func next_room(room_path: String) -> void:
 	run_room_count += 1
+	print("run roomcount: ", run_room_count)
 	current_room_path = room_path
 	current_level.next_room(current_room_path)

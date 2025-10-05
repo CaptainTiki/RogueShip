@@ -16,19 +16,24 @@ func disable() -> void:
 	monitoring = false
 
 func _on_body_entered(body: Node) -> void:
+	print("entered portal")
 	if body.is_in_group("player"):
 		var choices = get_room_choices()
-		if choices.size() == 1:
-			emit_signal("room_selected", choices[0])
-		else:
-			show_room_selection_ui(choices)
+		#if choices.size() == 1:
+			#print("choices == 1")
+			#emit_signal("room_selected", choices[0])
+		#else:
+		show_room_selection_ui(choices)
 
 func get_room_choices() -> Array[String]:
 	if GameManager.run_room_count >= GameManager.max_rooms - 1:
+		print("returning boss type room")
 		return ["Boss"]  # Boss room (placeholder)
-	var possible_types: Array[String] = ["Standard", "Wave", "Treasure"]
+	var possible_types: Array[String] = ["Standard", "Wave", "Treasure", "Puzzle"]
 	possible_types.shuffle()
-	return possible_types.slice(0, randi_range(2, 3))
+	var returnstring : Array[String] = possible_types.slice(0, randi_range(2, 3))
+	print ("returning: ", returnstring)
+	return returnstring
 
 func show_room_selection_ui(choices: Array[String]) -> void:
 	var ui = preload("res://UI/System/RoomSelectionUI.tscn").instantiate()

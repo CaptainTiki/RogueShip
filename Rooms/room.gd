@@ -36,8 +36,10 @@ func spawn_portal() -> void:
 	portal.enable()
 
 func _on_portal_room_selected(room_path: String) -> void:
+	print("room: on portal selected")
 	var level = get_tree().current_scene as Level
 	if level:
+		print("level valid")
 		level.next_room(room_path)
 
 func get_room_bounds() -> Dictionary:

@@ -1,6 +1,8 @@
 extends CharacterBody3D
 class_name Enemy
 
+signal destroyed
+
 @export var max_hull: float = 30.0
 @export var speed: float = 5.0
 @export var attack_range: float = 20.0
@@ -96,11 +98,13 @@ func die_scored() -> void:
 			pickup.global_position = global_position
 	if get_tree().current_scene is Level:
 		get_tree().current_scene.enemy_killed()  # Decrement count
+	destroyed.emit()
 	queue_free()
 
 func die_unscored() -> void:
 	if get_tree().current_scene is Level:
 		get_tree().current_scene.enemy_killed()  # Still decrement for clear
+	destroyed.emit()
 	queue_free()
 
 func _on_attack_timeout() -> void:
