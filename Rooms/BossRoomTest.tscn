@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://c0o4vfoj843ss" path="res://System/ship_camera.gd" id="2_mh4qy"]
 [ext_resource type="PackedScene" uid="uid://ctb7nmiytho8y" path="res://asteroid.tscn" id="3_tyj33"]
 [ext_resource type="Texture2D" uid="uid://ofpom3tc6psm" path="res://Assets/Space/Starfields/Starfield 6 - 1024x1024.png" id="4_vhtwo"]
-[ext_resource type="PackedScene" uid="uid://cvwlvb7f8un4s" path="res://Enemies/CircleSnipeElite.tscn" id="6_v5f6f"]
+[ext_resource type="PackedScene" uid="uid://cvwlvb7f8un4s" path="res://Enemies/BehaviorEnemies/CircleSnipeElite.tscn" id="6_v5f6f"]
 [ext_resource type="PackedScene" uid="uid://csh8qxtu53sjs" path="res://Rooms/RoomSystems/Portal.tscn" id="7_eoeu4"]
 
 [sub_resource type="Gradient" id="Gradient_uprbt"]
@@ -131,12 +131,18 @@ mesh = SubResource("QuadMesh_6tpxg")
 
 [node name="Elite_CircleSnipe" parent="Objects/Enemies" instance=ExtResource("6_v5f6f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.564115, 0, -12.862701)
+is_mini_boss = null
+is_boss = null
 
 [node name="Elite_CircleSnipe2" parent="Objects/Enemies" instance=ExtResource("6_v5f6f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.857112, 0, -13.376894)
+is_mini_boss = null
+is_boss = null
 
 [node name="Elite_CircleSnipe3" parent="Objects/Enemies" instance=ExtResource("6_v5f6f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5859632, 0, -6.362771)
+is_mini_boss = null
+is_boss = null
 
 [node name="Systems" type="Node3D" parent="."]
 

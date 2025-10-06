@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ctb7nmiytho8y" path="res://asteroid.tscn" id="3_ckvfu"]
 [ext_resource type="PackedScene" uid="uid://3fp1iq0534gf" path="res://enemy_spawner.tscn" id="4_sc2ix"]
 [ext_resource type="Texture2D" uid="uid://c0lcgnl50jx2d" path="res://Assets/Space/Starfields/Starfield 8 - 1024x1024.png" id="5_26oo8"]
-[ext_resource type="PackedScene" uid="uid://cvwlvb7f8un4s" path="res://Enemies/CircleSnipeElite.tscn" id="6_pv6ev"]
+[ext_resource type="PackedScene" uid="uid://cvwlvb7f8un4s" path="res://Enemies/BehaviorEnemies/CircleSnipeElite.tscn" id="6_pv6ev"]
 [ext_resource type="PackedScene" uid="uid://csh8qxtu53sjs" path="res://Rooms/RoomSystems/Portal.tscn" id="7_hdscq"]
 
 [sub_resource type="Gradient" id="Gradient_uprbt"]
@@ -130,12 +130,18 @@ z_amt = 0.25
 
 [node name="EnemySpawner" parent="Objects/Hazards" instance=ExtResource("4_sc2ix")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.840532, 0, -62.411037)
+spawn_interval = null
+max_spawns = null
 
 [node name="EnemySpawner2" parent="Objects/Hazards" instance=ExtResource("4_sc2ix")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.454016, 0, -25.926916)
+spawn_interval = null
+max_spawns = null
 
 [node name="EnemySpawner3" parent="Objects/Hazards" instance=ExtResource("4_sc2ix")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.113914, 0, 39.53444)
+spawn_interval = null
+max_spawns = null
 
 [node name="Background" type="MeshInstance3D" parent="Objects"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -70, 0)
@@ -145,6 +151,8 @@ mesh = SubResource("QuadMesh_6tpxg")
 
 [node name="Elite_CircleSnipe" parent="Objects/Enemies" instance=ExtResource("6_pv6ev")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 43.160988)
+is_mini_boss = null
+is_boss = null
 
 [node name="Systems" type="Node3D" parent="."]
 

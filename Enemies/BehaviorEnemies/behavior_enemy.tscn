@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://bg57py6i2fgvf"]
 
-[ext_resource type="Script" uid="uid://ckuxbgq0crtpo" path="res://Enemies/enemy.gd" id="1_3ih25"]
-[ext_resource type="Script" uid="uid://ch4l8m8r8eo6k" path="res://Enemies/DestroyBehaviors/on_destroy.gd" id="2_47qgu"]
-[ext_resource type="PackedScene" uid="uid://nft1vef6eakc" path="res://Weapons/BasicWeapon.tscn" id="2_bxkaj"]
+[ext_resource type="Script" uid="uid://ckuxbgq0crtpo" path="res://Enemies/BehaviorEnemies/behavior_enemy.gd" id="1_cjp5y"]
+[ext_resource type="Script" uid="uid://ch4l8m8r8eo6k" path="res://Enemies/DestroyBehaviors/on_destroy.gd" id="2_5two3"]
+[ext_resource type="PackedScene" uid="uid://nft1vef6eakc" path="res://Weapons/BasicWeapon.tscn" id="3_w5uxi"]
 
 [sub_resource type="Resource" id="Resource_572h1"]
-script = ExtResource("2_47qgu")
+script = ExtResource("2_5two3")
 metadata/_custom_type_script = "uid://ch4l8m8r8eo6k"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_chnrf"]
@@ -17,11 +17,19 @@ radius = 0.75
 [sub_resource type="SphereShape3D" id="SphereShape3D_bxkaj"]
 radius = 0.55
 
-[node name="Enemy" type="CharacterBody3D" groups=["enemies"]]
+[node name="BehaviorEnemy" type="CharacterBody3D" groups=["enemies"]]
 collision_layer = 768
 collision_mask = 16777473
 axis_lock_linear_y = true
-script = ExtResource("1_3ih25")
+script = ExtResource("1_cjp5y")
+attack_range = null
+flee_threshold = null
+turn_rate = null
+is_elite = null
+is_mini_boss = null
+is_boss = null
+max_hull = null
+speed = null
 on_destroy_script = SubResource("Resource_572h1")
 
 [node name="HitBox" type="Area3D" parent="."]
@@ -55,7 +63,7 @@ size = Vector3(0.2, 0.20527345, 0.2)
 
 [node name="Weapons" type="Node3D" parent="RotationPivot"]
 
-[node name="BasicWeapon" parent="RotationPivot/Weapons" instance=ExtResource("2_bxkaj")]
+[node name="BasicWeapon" parent="RotationPivot/Weapons" instance=ExtResource("3_w5uxi")]
 transform = Transform3D(1, 0, -0.0001744926, 0, 1, 0, 0.0001744926, 0, 1, -0.008759201, 0, -0.5443008)
 
 [node name="Muzzle" type="Marker3D" parent="RotationPivot/Weapons/BasicWeapon"]

@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://33hcrlbr6bq5"]
+
+[ext_resource type="Script" uid="uid://bngolgut68xko" path="res://Enemies/PatternEnemies/pattern_enemy.gd" id="1_liipv"]
+[ext_resource type="Script" uid="uid://cl8kkrxavunm4" path="res://Enemies/PatternEnemies/EnemyPatterns/sine_wave_pattern.gd" id="2_wwcuf"]
+[ext_resource type="PackedScene" uid="uid://nft1vef6eakc" path="res://Weapons/BasicWeapon.tscn" id="3_glq8h"]
+
+[sub_resource type="Resource" id="Resource_jsc1l"]
+script = ExtResource("2_wwcuf")
+frequency = 1.0
+metadata/_custom_type_script = "uid://cl8kkrxavunm4"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_chnrf"]
+radius = 0.65
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3ih25"]
+radius = 0.75
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bxkaj"]
+radius = 0.55
+
+[node name="PatternEnemy" type="CharacterBody3D" groups=["enemies"]]
+collision_layer = 768
+collision_mask = 16777473
+axis_lock_linear_y = true
+script = ExtResource("1_liipv")
+pattern_script = SubResource("Resource_jsc1l")
+attack_interval = 5.0
+max_hull = 6.0
+speed = 2.5
+
+[node name="HitBox" type="Area3D" parent="."]
+collision_layer = 256
+collision_mask = 65536
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+shape = SubResource("SphereShape3D_chnrf")
+debug_color = Color(1, 0, 0, 0.69411767)
+
+[node name="HurtBox" type="Area3D" parent="."]
+collision_layer = 256
+collision_mask = 16842753
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+shape = SubResource("SphereShape3D_3ih25")
+debug_color = Color(1, 1, 0, 0.2901961)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_bxkaj")
+
+[node name="RotationPivot" type="Node3D" parent="."]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="RotationPivot"]
+
+[node name="Top" type="CSGBox3D" parent="RotationPivot/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5362071, 0)
+size = Vector3(0.2, 0.20527345, 0.2)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="RotationPivot/CSGCombiner3D"]
+
+[node name="Weapons" type="Node3D" parent="RotationPivot"]
+
+[node name="BasicWeapon" parent="RotationPivot/Weapons" instance=ExtResource("3_glq8h")]
+transform = Transform3D(1, 0, -0.0001744926, 0, 1, 0, 0.0001744926, 0, 1, -0.008759201, 0, -0.5443008)
+
+[node name="Muzzle" type="Marker3D" parent="RotationPivot/Weapons/BasicWeapon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.346335e-05, 0, -1.0984554)
+
+[node name="BasicWeaponMesh" type="CSGBox3D" parent="RotationPivot/Weapons/BasicWeapon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5262514e-05, 0.023935735, -0.26807016)
+size = Vector3(0.2, 0.2, 0.8290771)
+
+[node name="StaggerTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
+[connection signal="body_entered" from="HurtBox" to="." method="_on_hurtbox_body_entered"]
+[connection signal="timeout" from="StaggerTimer" to="." method="_on_stagger_timeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timeout"]

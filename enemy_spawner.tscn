@@ -1,9 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://3fp1iq0534gf"]
+[gd_scene load_steps=4 format=3 uid="uid://3fp1iq0534gf"]
 
 [ext_resource type="Script" uid="uid://cdmgdt5u5o36h" path="res://enemy_spawner.gd" id="1_ewhtn"]
-[ext_resource type="PackedScene" uid="uid://dcxf5vokqxhf1" path="res://Enemies/SeekNRamEnemy.tscn" id="2_00s5r"]
-[ext_resource type="PackedScene" uid="uid://n775a0ysc84b" path="res://Enemies/BoomNZoomEnemy.tscn" id="3_i0ei4"]
-[ext_resource type="PackedScene" uid="uid://du2b2b2yjioc3" path="res://Enemies/CircleSnipeMG.tscn" id="4_568dl"]
+[ext_resource type="PackedScene" uid="uid://33hcrlbr6bq5" path="res://Enemies/PatternEnemies/pattern_enemy.tscn" id="2_00s5r"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ewhtn"]
 size = Vector3(5, 0.01, 5)
@@ -11,8 +9,14 @@ size = Vector3(5, 0.01, 5)
 [node name="SpawnArea" type="Area3D" groups=["spawners"]]
 collision_layer = 512
 collision_mask = 0
+monitoring = false
+monitorable = false
 script = ExtResource("1_ewhtn")
-enemy_scenes = Array[PackedScene]([ExtResource("2_00s5r"), ExtResource("3_i0ei4"), ExtResource("4_568dl")])
+enemy_scenes = Array[PackedScene]([ExtResource("2_00s5r")])
+max_spawns = 1
+wave_mode = true
+wave_size = 1
+preview_duration = 10.62
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ewhtn")

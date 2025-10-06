@@ -6,6 +6,7 @@ var transition_instance: CanvasLayer = null
 var room_list: Array[String] = [
 	"res://Rooms/StandardRoomTest.tscn",
 	"res://Rooms/WaveRoomTest.tscn",
+	"res://Rooms/WaveRoomPatternTest.tscn",
 	"res://Rooms/TreasureRoomTest.tscn",
 	"res://Rooms/BossRoomTest.tscn",
 	"res://Rooms/PuzzleRoomTest.tscn"
@@ -14,7 +15,7 @@ var run_room_count: int = 0
 var max_rooms: int = 3 #includes final room (boss room)
 
 var standard_rooms: Array[String] = ["res://Rooms/StandardRoomTest.tscn"]
-var wave_rooms: Array[String] = ["res://Rooms/WaveRoomTest.tscn"]
+var wave_rooms: Array[String] = ["res://Rooms/WaveRoomTest.tscn","res://Rooms/WaveRoomPatternTest.tscn"]
 var treasure_rooms: Array[String] = ["res://Rooms/TreasureRoomTest.tscn"]
 var puzzle_rooms: Array[String] = ["res://Rooms/PuzzleRoomTest.tscn"]
 var boss_rooms: Array[String] = ["res://Rooms/BossRoomTest.tscn"] 
